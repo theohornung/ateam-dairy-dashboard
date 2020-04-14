@@ -3,8 +3,6 @@ package application;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.layout.BorderPane;
 
 
 public class Main extends Application {
@@ -24,11 +22,10 @@ public class Main extends Application {
 //			e.printStackTrace();
 //		}
 		
-		Label hello = new Label("Ok, looks like javafx is all set up here");
-		BorderPane root = new BorderPane();
-		root.setCenter(hello);
 		
-		Scene mainScene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
+		Dashboard dashboard = new Dashboard();
+		
+		Scene mainScene = new Scene(dashboard, WINDOW_WIDTH, WINDOW_HEIGHT);
 		primaryStage.setScene(mainScene);
 		
 		primaryStage.show();
