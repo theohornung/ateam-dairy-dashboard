@@ -23,7 +23,7 @@ public class Main extends Application {
 //		}
 		
 		
-		Dashboard dashboard = new Dashboard();
+		Dashboard dashboard = new Dashboard(primaryStage);
 		
 		Scene mainScene = new Scene(dashboard, WINDOW_WIDTH, WINDOW_HEIGHT);
 		primaryStage.setScene(mainScene);
