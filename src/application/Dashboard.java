@@ -1,10 +1,9 @@
 package application;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -16,26 +15,7 @@ import javafx.stage.Stage;
 
 public class Dashboard extends BorderPane {
 
-	private Stage primaryStage;
-	private class ImportExportHandler implements EventHandler<ActionEvent>{
-		private Button button;
-		private FileChooser fileChooser;
-		ImportExportHandler(Button button, FileChooser fileChooser){
-			this.button = button;
-			this.fileChooser = fileChooser;}
-		@Override
-		public void handle(ActionEvent e) {
-			if(button.getText().equals("import")) {
-				fileChooser.showOpenDialog(primaryStage);
-			}else if(button.getText().equals("export")) {
-				fileChooser.showSaveDialog(primaryStage);
-				
-			} 
-		}
-		
-	}
-
-	
+	private Stage primaryStage;	
 	
 	public Dashboard(Stage primaryStage) {
 		super();
@@ -92,11 +72,19 @@ public class Dashboard extends BorderPane {
 		importChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV File", ".csv"));
 		exportChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV File", ".csv"));
 		
-		//creation of functionality to button
-		ImportExportHandler impHandler = new ImportExportHandler(importButton, importChooser);
-		ImportExportHandler expHandler = new ImportExportHandler(exportButton, exportChooser);
-		importButton.setOnAction(impHandler);
-		exportButton.setOnAction(expHandler);
+		//creation of functionality to button		
+		importButton.setOnAction(e -> { 
+			File importFile = importChooser.showOpenDialog(primaryStage);
+			if (importFile != null) {
+				// read file
+			}
+		});
+		exportButton.setOnAction(e -> {
+			File export = exportChooser.showSaveDialog(primaryStage);
+			if (export != null) {
+				// write to file
+			}
+		});
 		
 		//adding to dashboard
 		HBox importExport = new HBox(importButton, exportButton);	
