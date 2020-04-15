@@ -1,10 +1,17 @@
 package application;
 
+<<<<<<< HEAD
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+=======
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+
+>>>>>>> ethanCommit01
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
@@ -14,6 +21,7 @@ import javafx.stage.Stage;
 
 public class Dashboard extends BorderPane {
 
+<<<<<<< HEAD
 	private Stage primaryStage;
 	/**
 	 * ImportExportHandler - handles import export requests from clicked buttons
@@ -53,6 +61,9 @@ public class Dashboard extends BorderPane {
 	}
 
 	
+=======
+	private Stage primaryStage;	
+>>>>>>> ethanCommit01
 	
 	public Dashboard(Stage primaryStage) {
 		super();
@@ -109,11 +120,19 @@ public class Dashboard extends BorderPane {
 		importChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV File", ".csv"));
 		exportChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV File", ".csv"));
 		
-		//creation of functionality to button
-		ImportExportHandler impHandler = new ImportExportHandler(importButton, importChooser);
-		ImportExportHandler expHandler = new ImportExportHandler(exportButton, exportChooser);
-		importButton.setOnAction(impHandler);
-		exportButton.setOnAction(expHandler);
+		//creation of functionality to button		
+		importButton.setOnAction(e -> { 
+			File importFile = importChooser.showOpenDialog(primaryStage);
+			if (importFile != null) {
+				// read file
+			}
+		});
+		exportButton.setOnAction(e -> {
+			File export = exportChooser.showSaveDialog(primaryStage);
+			if (export != null) {
+				// write to file
+			}
+		});
 		
 		//adding to dashboard
 		HBox importExport = new HBox(importButton, exportButton);	
