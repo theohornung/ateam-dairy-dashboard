@@ -1,14 +1,12 @@
 package application;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.FileChooser;
@@ -17,7 +15,11 @@ import javafx.stage.Stage;
 public class Dashboard extends BorderPane {
 
 	private Stage primaryStage;
-	private class ImportExportHandler implements EventHandler<ActionEvent>{
+	/**
+	 * ImportExportHandler - handles import export requests from clicked buttons
+	 * @author Ethan Simonen (2020)
+	 */
+	private class ImportExportHandler implements EventHandler<ActionEvent> {
 		private Button button;
 		private FileChooser fileChooser;
 		ImportExportHandler(Button button, FileChooser fileChooser){
@@ -31,6 +33,21 @@ public class Dashboard extends BorderPane {
 				fileChooser.showSaveDialog(primaryStage);
 				
 			} 
+		}
+		
+	}
+	
+	/**
+	 * HelpHandler - handles dialog request from clicked button
+	 * @author Ethan Simonen (2020)
+	 */
+	private class HelpHandler implements EventHandler<ActionEvent> {
+		private Alert help;
+		HelpHandler(Alert help){
+			this.help = help;}
+		@Override
+		public void handle(ActionEvent e) {
+			help.showAndWait(); 
 		}
 		
 	}
@@ -62,29 +79,29 @@ public class Dashboard extends BorderPane {
 	}
 	
 	private void initTop() {
-		FileInputStream input = null;
-		try {
-			input = new FileInputStream("questionIcon.jpg");
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		Image image = new Image(input);
-		ImageView imageView = new ImageView(image);
-		imageView.setFitHeight(30);
-		imageView.setFitWidth(25);
-		
-		Button button = new Button("Help", imageView);
+
+		//Creation of button
+		Button button = new Button("Help");
 		this.setTop(button);
+		
+		//Creation of dialog box
+		Alert help = new Alert(AlertType.INFORMATION);
+		help.setTitle("Help / FAQs");
+		help.setHeaderText(null);
+		help.setContentText("Welcome to the dairy dashboard!\nContent\n\nMore Content");
+		
+		//creation of functionality of help button
+		HelpHandler helpHandler = new HelpHandler(help);
+		button.setOnAction(helpHandler);
+
 	}
 	
 	private void initBottom() {
-		//Creating the HBox to hold the import and export buttons
-		FileChooser importer = new FileChooser();
 		
 		//Creation of import and export button
 		Button importButton = new Button("import");
 		Button exportButton = new Button("export");	
+		
 		
 		//Creating filechoosers for import and export
 		FileChooser importChooser = new FileChooser();
