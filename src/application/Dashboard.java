@@ -1,44 +1,82 @@
 package application;
 
-import java.io.File;
+import java.util.Optional;
 
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.stage.FileChooser;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 
+/*
+ * The application's main dashboard that facilitates the functionality of all other components.
+ * This dashboard organizes the layout of these children components.
+ */
 public class Dashboard extends BorderPane {
 
 	private Stage primaryStage;
+	private ScrollPane sPane;
+	private MilkTable farmTable;
 
 	public Dashboard(Stage primaryStage) {
 		super();
-		init();
+		
+		sPane = new ScrollPane();
+		farmTable = new MilkTable();
 		this.primaryStage = primaryStage;
+
+		init();
 	}
 
+	/**
+	 * Helper method to organize the initialization of the dashboard.
+	 * This methods calls other helper methods that serve to initialize different
+	 * panels of the dashboard.
+	 */
 	private void init() {
-		initLeft();
+		
 		initRight();
 		initTop();
 		initBottom();
 		initCenter();
 	}
 
-	private void initLeft() {
-		Label testLeft = new Label("Test left");
-		this.setLeft(testLeft);
-	}
 
+	/*
+	 * Initialize the right panel.
+	 * This panel contains all data manip. controls.
+	 */
 	private void initRight() {
-		Label testRight = new Label("Test right");
-		this.setRight(testRight);
+		VBox buttons = new VBox();
+		Button addMilk = new Button("Add Milk");
+
+		AddMilkDialog milkTaker = new AddMilkDialog();
+
+		// set control to add milk data entered into the dialog
+		addMilk.setOnMouseClicked(e -> {
+			Optional<MilkData> data = milkTaker.showAndWait();
+			if (data.isPresent()) {
+				ObservableList<MilkData> tableData = farmTable.getItems();
+				MilkData milk = data.get();
+				tableData.add(milk);
+				farmTable.addMilkWeight(milk.getMilkWeight());
+				farmTable.setItems(tableData);
+			}
+		});
+
+		buttons.getChildren().add(addMilk);
+		this.setRight(buttons);
 	}
 
+	/*
+	 * Initialize the top panel.
+	 * This panel contains user help controls.
+	 */
 	private void initTop() {
 
 		// Creation of dialog box
@@ -55,39 +93,29 @@ public class Dashboard extends BorderPane {
 		button.setOnAction(e -> help.showAndWait());
 	}
 
+	/**
+	 * Initialize bottom panel.
+	 * This panel contains all controls related to file r/w ops.
+	 */
 	private void initBottom() {
 
 		// Creation of import and export button
-		Button importButton = new Button("import");
-		Button exportButton = new Button("export");
-
-		// Creating filechoosers for import and export
-		FileChooser importChooser = new FileChooser();
-		FileChooser exportChooser = new FileChooser();
-		importChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV File", ".csv"));
-		exportChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV File", ".csv"));
-
-		// creation of functionality to button
-		importButton.setOnAction(e -> {
-			File importFile = importChooser.showOpenDialog(primaryStage);
-			if (importFile != null) {
-				// read file
-			}
-		});
-		exportButton.setOnAction(e -> {
-			File export = exportChooser.showSaveDialog(primaryStage);
-			if (export != null) {
-				// write to file
-			}
-		});
+		Button importButton = new ImportButton(primaryStage);
+		Button exportButton = new ExportButton(primaryStage);
 
 		// adding to dashboard
 		HBox importExport = new HBox(importButton, exportButton);
 		this.setBottom(importExport);
 	}
 
+	/**
+	 * Initialize the center panel.
+	 * This panel displays the main milk data table.
+	 */
 	private void initCenter() {
-		Label testCenter = new Label("Test center");
-		this.setCenter(testCenter);
+		sPane.setHbarPolicy(ScrollBarPolicy.AS_NEEDED);
+		sPane.setVbarPolicy(ScrollBarPolicy.AS_NEEDED);
+		sPane.setContent(farmTable);
+		this.setCenter(sPane);
 	}
 }
