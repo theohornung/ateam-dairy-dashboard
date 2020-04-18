@@ -4,7 +4,9 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 
-
+/**
+ * Main class of GUI application
+ */
 public class Main extends Application {
 	
 	private static final int WINDOW_HEIGHT = 400;
@@ -16,7 +18,7 @@ public class Main extends Application {
 		
 		Scene mainScene = new Scene(dashboard, WINDOW_WIDTH, WINDOW_HEIGHT);
 		primaryStage.setScene(mainScene);
-		
+		primaryStage.setTitle("CCFMAS");
 		primaryStage.show();
 	}
 	
