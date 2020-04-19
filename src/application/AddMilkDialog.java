@@ -21,8 +21,7 @@ import javafx.scene.layout.GridPane;
  * A dialog that takes in data to create new milk data
  */
 public class AddMilkDialog extends Dialog<MilkData> {
-	
-	
+
 	public AddMilkDialog() {
 		this.setTitle("Add Milk");
 		this.setHeaderText("Please put in the following milk values");
@@ -83,23 +82,30 @@ public class AddMilkDialog extends Dialog<MilkData> {
 		// set the dialog to return a MilkData obj after submitting valid data
 		this.setResultConverter(dialogButton -> {
 			if (dialogButton == insertButtonType) {
-				// check for invalid date
-				if (isValidDate(day.getValue(), month.getValue(), Integer.parseInt(year.getText()))) {
-					MilkData data = new MilkData(
-							farmName.getText(),
-							Double.parseDouble(milkWeight.getText()),
-							day.getValue(),
-							month.getValue(),
-							Integer.parseInt(year.getText()));
-					return data;
+				try {
+					// check for invalid date
+					if (isValidDate(day.getValue(), month.getValue(), Integer.parseInt(year.getText()))) {
+						MilkData data = new MilkData(
+								farmName.getText(),
+								Double.parseDouble(milkWeight.getText()),
+								day.getValue(),
+								month.getValue(),
+								Integer.parseInt(year.getText()));
+						return data;
+					}
+				}
+				catch (NumberFormatException e) {
+					// don't allow invalid number fields
+					// TODO (possibly) add field validation for dialogs
 				}
 			}
 			return null;
 		});
 	}
-	
+
 	/**
 	 * Helper method to check for invalid date
+	 * 
 	 * @param day
 	 * @param month
 	 * @param year
