@@ -68,8 +68,15 @@ public class Dashboard extends BorderPane {
 				farmTable.setItems(tableData);
 			}
 		});
-
-		buttons.getChildren().add(addMilk);
+		
+		// TODO implement these buttons
+		Button removeMilk = new Button("Remove milk");
+		Button milkByYear = new Button("Milk by year");
+		Button milkByMonth = new Button("Milk by month");
+		Button milkByFarm = new Button("Milk by farm");
+		//
+		
+		buttons.getChildren().addAll(addMilk, removeMilk, milkByYear, milkByMonth, milkByFarm);
 		this.setRight(buttons);
 	}
 
