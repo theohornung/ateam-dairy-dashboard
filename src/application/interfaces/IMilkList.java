@@ -1,8 +1,10 @@
-package application;
+package application.interfaces;
 
-import java.util.ArrayList;
+import java.util.List;
 
-public interface IMilkList {
+import application.MilkData;
+
+public interface IMilkList extends List<MilkData> {
 
 
 	/**

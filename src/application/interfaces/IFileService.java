@@ -1,8 +1,10 @@
-package application;
+package application.interfaces;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
+
+import application.MilkData;
 
 /**
  * Interface to define file r/w functionality for milk data

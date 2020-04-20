@@ -3,11 +3,15 @@ package application;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import application.interfaces.IMilkList;
+
 public class MilkList extends ArrayList<MilkData> implements IMilkList {
 
-	MilkList(){
-	super();	
-	}
+	/**
+	 * We don't use this. This is only here to appease an eclipse warning.
+	 */
+	private static final long serialVersionUID = 1L;
+
 
 	/**
 	 * creates an ArrayList with all instances inclusively between the two years entered 

@@ -1,4 +1,4 @@
-package application;
+package test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
@@ -13,6 +13,10 @@ import java.util.Scanner;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import application.FileService;
+import application.MilkData;
+import application.interfaces.IFileService;
 
 /**
  * Test case for FileService.java
