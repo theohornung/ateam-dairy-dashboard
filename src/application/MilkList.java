@@ -61,7 +61,7 @@ public class MilkList extends ArrayList<MilkData> {
 	 */
 	MilkList getFromMonths(int year, int begin, int end){
 		MilkList monthMilk = new MilkList();
-		for( MilkData data : this) {
+		for( MilkData data : this.getFromYear(year)) {
 			if(data.getDate().getMonthValue() >= begin && data.getDate().getMonthValue() <= end) {
 				monthMilk.add(data);
 			}
