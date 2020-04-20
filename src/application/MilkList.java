@@ -9,24 +9,6 @@ public class MilkList extends ArrayList<MilkData> implements IMilkList {
 	super();	
 	}
 
-	
-	/**
-	 * add an instance of MilkData
-	 * @param data - a MilkData instance 
-	 */
-	public void addMilk(MilkData data) {
-		super.add(data);
-	}
-	
-	/**
-	 * Add all in an array of MilkData into the list 
-	 * @param data - an ArrayList of MilkData
-	 */
-	public void addMilk(ArrayList<MilkData> data) {
-		super.addAll(data);
-	}
-	
-	
 	/**
 	 * creates an ArrayList with all instances inclusively between the two years entered 
 	 * @param begin - starting year

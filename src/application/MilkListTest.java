@@ -23,28 +23,7 @@ class MilkListTest {
 	}
 
 	@Test
-	void test001_Add_Milk_Singular() {
-		assertEquals(milkList.size(), 0);
-		milkList.addMilk(new MilkData("Farm 3", 999, 5, Month.MARCH, 9999));
-		assertEquals(milkList.size(), 1);
-	}
-	
-	@Test
-	void test002_Add_Milk_Multiple() {
-		ArrayList<MilkData> milkArrayList = new ArrayList<>();
-		milkArrayList.add(new MilkData("Farm 1", 1000, 26, Month.MARCH, 2015));
-		milkArrayList.add(new MilkData("Farm 1", 100, 5, Month.APRIL, 2015));
-		milkArrayList.add(new MilkData("Farm 2", 10, 15, Month.APRIL, 2015));
-		milkArrayList.add(new MilkData("Farm 2", 600, 5, Month.DECEMBER, 2017));
-		milkArrayList.add(new MilkData("Farm 3", 10000, 5, Month.JULY, 2019));
-		milkArrayList.add(new MilkData("Farm 1", 0, 5, Month.AUGUST, 2020));
-		milkArrayList.add(new MilkData("Farm 3", 999, 5, Month.MARCH, 9999));
-		milkList.addMilk(milkArrayList);
-		assertEquals(milkList.size(), 7);
-	}
-
-	@Test
-	void test003_GetFromYears() {
+	void test001_GetFromYears() {
 
 		milkList.add(new MilkData("Farm 1", 1000, 26, Month.MARCH, 2015));
 		milkList.add(new MilkData("Farm 1", 100, 5, Month.APRIL, 2015));
@@ -57,7 +36,7 @@ class MilkListTest {
 	}
 	
 	@Test
-	void test004_GetFromYear() {
+	void test002_GetFromYear() {
 
 		milkList.add(new MilkData("Farm 1", 1000, 26, Month.MARCH, 2015));
 		milkList.add(new MilkData("Farm 1", 100, 5, Month.APRIL, 2015));
@@ -70,7 +49,7 @@ class MilkListTest {
 	}
 	
 	@Test
-	void test005_GetFromMonths() {
+	void test003_GetFromMonths() {
 
 		milkList.add(new MilkData("Farm 1", 1000, 26, Month.MARCH, 2015));
 		milkList.add(new MilkData("Farm 1", 100, 5, Month.APRIL, 2015));
@@ -83,7 +62,7 @@ class MilkListTest {
 	}
 	
 	@Test
-	void test006_GetFromMonth() {
+	void test004_GetFromMonth() {
 
 		milkList.add(new MilkData("Farm 1", 1000, 26, Month.MARCH, 2015));
 		milkList.add(new MilkData("Farm 1", 100, 5, Month.APRIL, 2015));
@@ -96,7 +75,7 @@ class MilkListTest {
 	}
 	
 	@Test
-	void test007_GetFromFarm() {
+	void test005_GetFromFarm() {
 
 		milkList.add(new MilkData("Farm 1", 1000, 26, Month.MARCH, 2015));
 		milkList.add(new MilkData("Farm 1", 100, 5, Month.APRIL, 2015));
@@ -109,7 +88,7 @@ class MilkListTest {
 	}
 	
 	@Test
-	void test008_GetMin() {
+	void test006_GetMin() {
 
 		milkList.add(new MilkData("Farm 1", 1000, 26, Month.MARCH, 2015));
 		milkList.add(new MilkData("Farm 1", 100, 5, Month.APRIL, 2015));
@@ -122,7 +101,7 @@ class MilkListTest {
 	}
 	
 	@Test
-	void test009_GetMax() {
+	void test007_GetMax() {
 
 		milkList.add(new MilkData("Farm 1", 1000, 26, Month.MARCH, 2015));
 		milkList.add(new MilkData("Farm 1", 100, 5, Month.APRIL, 2015));
@@ -134,7 +113,7 @@ class MilkListTest {
 		assertEquals(milkList.getMax().getFarmName(), "Max");
 	}
 	@Test
-	void test010_GetMean() {
+	void test008_GetMean() {
 
 		milkList.add(new MilkData("Farm 1", 1000, 5, Month.APRIL, 2015));
 		milkList.add(new MilkData("Farm 2", 1000, 15, Month.APRIL, 2015));
@@ -146,7 +125,7 @@ class MilkListTest {
 	}
 	
 	@Test
-	void test011_GetSum() {
+	void test09_GetSum() {
 
 		milkList.add(new MilkData("Farm 1", 1000, 5, Month.APRIL, 2015));
 		milkList.add(new MilkData("Farm 2", 1000, 15, Month.APRIL, 2015));

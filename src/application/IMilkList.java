@@ -4,14 +4,7 @@ import java.util.ArrayList;
 
 public interface IMilkList {
 
-	/**
-	 * @param data - MilkData to be added
-	 */
-	public void addMilk(MilkData data);
-	/**
-	 * @param data ArrayList<MilkData> to be added
-	 */
-	public void addMilk(ArrayList<MilkData> data);
+
 	/**
 	 * @param begin year
 	 * @param end year
