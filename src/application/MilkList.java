@@ -3,7 +3,7 @@ package application;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class MilkList extends ArrayList<MilkData> {
+public class MilkList extends ArrayList<MilkData> implements IMilkList {
 
 	MilkList(){
 	super();	
@@ -14,7 +14,7 @@ public class MilkList extends ArrayList<MilkData> {
 	 * add an instance of MilkData
 	 * @param data - a MilkData instance 
 	 */
-	void addMilk(MilkData data) {
+	public void addMilk(MilkData data) {
 		super.add(data);
 	}
 	
@@ -22,7 +22,7 @@ public class MilkList extends ArrayList<MilkData> {
 	 * Add all in an array of MilkData into the list 
 	 * @param data - an ArrayList of MilkData
 	 */
-	void addMilk(ArrayList<MilkData> data) {
+	public void addMilk(ArrayList<MilkData> data) {
 		super.addAll(data);
 	}
 	
@@ -33,7 +33,7 @@ public class MilkList extends ArrayList<MilkData> {
 	 * @param end - ending year
 	 * @return - MilkList of all MilkData between the starting and ending year
 	 */
-	MilkList getFromYears(int begin, int end){
+	public MilkList getFromYears(int begin, int end){
 		MilkList yearMilk = new MilkList();
 		for( MilkData data : this) {
 			if(data.getDate().getYear() >= begin && data.getDate().getYear() <= end) {
@@ -48,7 +48,7 @@ public class MilkList extends ArrayList<MilkData> {
 	 * @param year
 	 * @return - MilkList of all MilkData during the year
 	 */
-	MilkList getFromYear(int year) {
+	public MilkList getFromYear(int year) {
 		return getFromYears(year, year);
 	}
 	
@@ -59,7 +59,7 @@ public class MilkList extends ArrayList<MilkData> {
 	 * @param end
 	 * @return MilkList
 	 */
-	MilkList getFromMonths(int year, int begin, int end){
+	public MilkList getFromMonths(int year, int begin, int end){
 		MilkList monthMilk = new MilkList();
 		for( MilkData data : this.getFromYear(year)) {
 			if(data.getDate().getMonthValue() >= begin && data.getDate().getMonthValue() <= end) {
@@ -75,7 +75,7 @@ public class MilkList extends ArrayList<MilkData> {
 	 * @param month
 	 * @return - MilkList
 	 */
-	MilkList getFromMonth(int year, int month){
+	public MilkList getFromMonth(int year, int month){
 		return getFromMonths(year, month, month);
 	}
 	
@@ -84,7 +84,7 @@ public class MilkList extends ArrayList<MilkData> {
 	 * @param farmID
 	 * @return - MilkList
 	 */
-	MilkList getFromFarm(String farmID){
+	public MilkList getFromFarm(String farmID){
 		 MilkList farmMilk = new MilkList();
 		for(MilkData data : this) {
 			if(data.getFarmName().equals(farmID)) {
@@ -98,7 +98,7 @@ public class MilkList extends ArrayList<MilkData> {
 	 * finds the MilkData with the minimum milk weight in the list
 	 * @return - MilkData
 	 */
-	MilkData getMin() {
+	public MilkData getMin() {
 		return Collections.min(this, (data1, data2) -> (int) (data1.getMilkWeight() - data2.getMilkWeight()));
 	}
 	
@@ -106,7 +106,7 @@ public class MilkList extends ArrayList<MilkData> {
 	 * finds the MilkData with the maximum milk weight in the list
 	 * @return - MilkData
 	 */
-	MilkData getMax() {
+	public MilkData getMax() {
 		return Collections.max(this, (data1, data2) -> (int) (data1.getMilkWeight() - data2.getMilkWeight()));
 	}
 	
@@ -114,11 +114,24 @@ public class MilkList extends ArrayList<MilkData> {
 	 * find the mean value of milk weight in a MilkList
 	 * @return - mean value
 	 */
-	double getMean() {
+	public double getMean() {
 		double mean = 0;
 		for(MilkData data : this) {
 			mean += data.getMilkWeight();
 		}
 		return mean / this.size(); 
+	}
+
+
+	/**
+	 * return sum of milkWeights
+	 */
+	@Override
+	public double getSum() {
+		double sum = 0;
+		for(MilkData data : this) {
+			sum += data.getMilkWeight();
+		}
+		return sum;
 	}
 }

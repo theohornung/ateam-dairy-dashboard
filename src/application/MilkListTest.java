@@ -144,4 +144,16 @@ class MilkListTest {
 		milkList.add(new MilkData("Farm 3", 0, 5, Month.MARCH, 9999));
 		assertEquals(milkList.getMean(), 500);
 	}
+	
+	@Test
+	void test011_GetSum() {
+
+		milkList.add(new MilkData("Farm 1", 1000, 5, Month.APRIL, 2015));
+		milkList.add(new MilkData("Farm 2", 1000, 15, Month.APRIL, 2015));
+		milkList.add(new MilkData("Farm 2", 1000, 5, Month.DECEMBER, 2017));
+		milkList.add(new MilkData("Max", 0, 5, Month.JULY, 2019));
+		milkList.add(new MilkData("Farm 1", 0, 5, Month.AUGUST, 2020));
+		milkList.add(new MilkData("Farm 3", 0, 5, Month.MARCH, 9999));
+		assertEquals(milkList.getSum(), 3000);
+	}
 }
