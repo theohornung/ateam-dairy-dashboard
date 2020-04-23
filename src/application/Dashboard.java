@@ -2,6 +2,8 @@ package application;
 
 import java.util.Optional;
 
+import application.interfaces.IFileService;
+import application.interfaces.IMilkList;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
@@ -19,12 +21,18 @@ import javafx.scene.control.Alert.AlertType;
  */
 public class Dashboard extends BorderPane {
 
+	private IMilkList masterList; // the list of all currently loaded milk data
+	private IFileService fileService;
+	
 	private Stage primaryStage;
 	private ScrollPane sPane;
 	private MilkTable farmTable;
 
 	public Dashboard(Stage primaryStage) {
 		super();
+		
+		masterList = new MilkList();
+		fileService = new FileService();
 		
 		sPane = new ScrollPane();
 		farmTable = new MilkTable();
@@ -64,6 +72,7 @@ public class Dashboard extends BorderPane {
 				ObservableList<MilkData> tableData = farmTable.getItems();
 				MilkData milk = data.get();
 				tableData.add(milk);
+				masterList.add(milk);
 				farmTable.addMilkWeight(milk.getMilkWeight());
 				farmTable.setItems(tableData);
 			}
@@ -107,8 +116,8 @@ public class Dashboard extends BorderPane {
 	private void initBottom() {
 
 		// Creation of import and export button
-		Button importButton = new ImportButton(primaryStage);
-		Button exportButton = new ExportButton(primaryStage);
+		Button importButton = new ImportButton(primaryStage, fileService, masterList, farmTable);
+		Button exportButton = new ExportButton(primaryStage, fileService, masterList);
 
 		// adding to dashboard
 		HBox importExport = new HBox(importButton, exportButton);

@@ -1,14 +1,14 @@
 package application;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.Month;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
+import java.util.stream.Collectors;
 
 import application.interfaces.IFileService;
 
@@ -21,21 +21,11 @@ public class FileService implements IFileService {
 	 * @see IFileService#readCsv(String)
 	 */
 	@Override
-	public List<MilkData> readCsv(String filePath)
-			throws FileNotFoundException, ArrayIndexOutOfBoundsException, NumberFormatException {
-		List<MilkData> res = new ArrayList<MilkData>();
-
-		Scanner sc = new Scanner(new File(filePath));
-		while (sc.hasNextLine()) {
-			String raw = sc.nextLine();
-			// skip if reading the line that describes the csv format
-			if (raw.equals("date,farm_id,weight"))
-				continue;
-			res.add(parseMilkData(raw));
-		}
-		sc.close();
-
-		return res;
+	public List<MilkData> readCsv(String filePath) throws IOException {
+		return Files.lines(Paths.get(filePath))
+				.filter(line -> !line.equals("date,farm_id,weight"))
+				.map(line -> parseMilkData(line))
+				.collect(Collectors.toList());
 	}
 
 	/**
@@ -96,7 +86,7 @@ public class FileService implements IFileService {
 	public void writeCsv(String fileName, List<MilkData> data) throws IOException {
 		File outFile = new File(fileName);
 		outFile.createNewFile();
-		
+
 		PrintWriter writer = new PrintWriter(fileName);
 
 		// write all milk data
