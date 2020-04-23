@@ -5,6 +5,7 @@ import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
@@ -62,7 +63,7 @@ class FileServiceTest {
 			assertEquals(Month.JANUARY, item50.getDate().getMonth());
 			assertEquals(2019, item50.getDate().getYear());
 
-		} catch (FileNotFoundException e) {
+		} catch (IOException e) {
 			fail("test01: unexpected exception " + e.getMessage());
 		}
 	}
@@ -95,7 +96,7 @@ class FileServiceTest {
 			assertEquals(Month.DECEMBER, item50.getDate().getMonth());
 			assertEquals(2019, item50.getDate().getYear());
 
-		} catch (FileNotFoundException e) {
+		} catch (IOException e) {
 			fail("test01: unexpected exception " + e.getMessage());
 		}
 	}
@@ -112,7 +113,7 @@ class FileServiceTest {
 			// assert
 			fail("test03: failed to throw exception when parsing invalid data");
 
-		} catch (FileNotFoundException | ArrayIndexOutOfBoundsException | NumberFormatException e) {
+		} catch (Exception e) {
 			// pass
 		}
 	}
@@ -129,7 +130,7 @@ class FileServiceTest {
 			// assert
 			fail("test04: failed to throw exception when parsing invalid data");
 
-		} catch (FileNotFoundException | ArrayIndexOutOfBoundsException | NumberFormatException e) {
+		} catch (Exception e) {
 			// pass
 		}
 	}

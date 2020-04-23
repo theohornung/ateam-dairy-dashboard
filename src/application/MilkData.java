@@ -45,5 +45,11 @@ public class MilkData {
 	public double getPercentOf(int total) {
 		return milkWeight / total;
 	}
+	
+	public boolean equals(MilkData other) {
+		return this.farmName.equals(other.getFarmName()) &&
+				this.milkWeight == other.getMilkWeight() &&
+				this.date.equals(other.getDate());
+	}
 
 }

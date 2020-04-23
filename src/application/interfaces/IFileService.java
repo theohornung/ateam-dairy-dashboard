@@ -17,7 +17,7 @@ public interface IFileService {
 	 * @return a list of milk data points
 	 * @throws FileNotFoundException 
 	 */
-	public List<MilkData> readCsv(String filePath) throws FileNotFoundException;
+	public List<MilkData> readCsv(String filePath) throws IOException;
 	
 	/**
 	 * Define file write functionality
