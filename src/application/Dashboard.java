@@ -5,6 +5,7 @@ import java.util.Optional;
 import application.interfaces.IFileService;
 import application.interfaces.IMilkList;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.layout.BorderPane;
@@ -21,7 +22,7 @@ import javafx.scene.control.Alert.AlertType;
  */
 public class Dashboard extends BorderPane {
 
-	private IMilkList masterList; // the list of all currently loaded milk data
+	private MilkList masterList; // the list of all currently loaded milk data
 	private IFileService fileService;
 	
 	private Stage primaryStage;
@@ -37,7 +38,6 @@ public class Dashboard extends BorderPane {
 		sPane = new ScrollPane();
 		farmTable = new MilkTable();
 		this.primaryStage = primaryStage;
-
 		init();
 	}
 
@@ -78,15 +78,24 @@ public class Dashboard extends BorderPane {
 			}
 		});
 		
-		// TODO implement these buttons
+		// TODO implement remove button
 		Button removeMilk = new Button("Remove milk");
-		Button milkByYear = new Button("Milk by year");
-		Button milkByMonth = new Button("Milk by month");
-		Button milkByFarm = new Button("Milk by farm");
-		//
+
 		
-		buttons.getChildren().addAll(addMilk, removeMilk, milkByYear, milkByMonth, milkByFarm);
+		
+		GetMilkDialog getMilk = new GetMilkDialog(masterList);
+		Button milkByRange = new Button("Milk By Range");
+		milkByRange.setOnMouseClicked(e -> {
+			Optional<MilkList> data = getMilk.showAndWait();
+			if (data.isPresent()) {
+				
+			}
+		});
+		
+		buttons.getChildren().addAll(addMilk, removeMilk, milkByRange);
 		this.setRight(buttons);
+		
+		
 	}
 
 	/*

@@ -41,6 +41,10 @@ public class MilkData {
 	public LocalDate getDate() {
 		return date;
 	}
+	
+	public String getFormattedDate() {
+		return date.getMonth().getValue() + "/" + date.getDayOfMonth() + "/" + date.getYear();
+	}
 
 	public double getPercentOf(int total) {
 		return milkWeight / total;

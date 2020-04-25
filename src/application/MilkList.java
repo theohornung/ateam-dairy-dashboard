@@ -1,5 +1,6 @@
 package application;
 
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -71,6 +72,7 @@ public class MilkList extends ArrayList<MilkData> implements IMilkList {
 	 * @return - MilkList
 	 */
 	public MilkList getFromFarm(String farmID){
+		if(farmID.equals("")) return this;
 		 MilkList farmMilk = new MilkList();
 		for(MilkData data : this) {
 			if(data.getFarmName().equals(farmID)) {
@@ -85,7 +87,17 @@ public class MilkList extends ArrayList<MilkData> implements IMilkList {
 	 * @return - MilkData
 	 */
 	public MilkData getMin() {
-		return Collections.min(this, (data1, data2) -> (int) (data1.getMilkWeight() - data2.getMilkWeight()));
+		if(this.size() == 0) return new MilkData("Empty", 0, 1, Month.JANUARY, 0);
+		MilkData min = null;
+		for( MilkData m : this) {
+			if(min == null) {
+				min = m;
+			}
+			if(min.getMilkWeight() > m.getMilkWeight()) {
+				min = m;
+			}
+		}
+		return min;
 	}
 	
 	/**
@@ -93,7 +105,17 @@ public class MilkList extends ArrayList<MilkData> implements IMilkList {
 	 * @return - MilkData
 	 */
 	public MilkData getMax() {
-		return Collections.max(this, (data1, data2) -> (int) (data1.getMilkWeight() - data2.getMilkWeight()));
+		if(this.size() == 0) return new MilkData("Empty", 0, 1, Month.JANUARY, 0);
+		MilkData max = null;
+		for( MilkData m : this) {
+			if(max == null) {
+				max = m;
+			}
+			if(max.getMilkWeight() < m.getMilkWeight()) {
+				max = m;
+			}
+		}
+		return max;
 	}
 	
 	/**
