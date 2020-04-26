@@ -24,8 +24,16 @@ public class MilkTable extends TableView<MilkData> {
 		TableColumn<MilkData, String> farm = new TableColumn<>("Farm");
 		TableColumn<MilkData, String> milkPer = new TableColumn<>("Milk %");
 		TableColumn<MilkData, String> milkWeight = new TableColumn<>("Milk Weight (lbs)");
+		TableColumn<MilkData, String> date = new TableColumn<>("Date");
 
 		// describes how each column should handle milk data
+		date.setCellValueFactory(new Callback<CellDataFeatures<MilkData, String>, ObservableValue<String>>() {
+			@Override
+			public ObservableValue<String> call(CellDataFeatures<MilkData, String> p) {
+				return new SimpleStringProperty(p.getValue().getFormattedDate());
+			}
+		});
+		
 		final ObservableList<MilkData> data = FXCollections.observableArrayList();
 		farm.setCellValueFactory(new Callback<CellDataFeatures<MilkData, String>, ObservableValue<String>>() {
 			@Override
@@ -48,7 +56,7 @@ public class MilkTable extends TableView<MilkData> {
 			}
 		});
 
-		this.getColumns().addAll(farm, milkPer, milkWeight);
+		this.getColumns().addAll(farm, milkPer, milkWeight, date);
 
 		this.setItems(data);
 	}

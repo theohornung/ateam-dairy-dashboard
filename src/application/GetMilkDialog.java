@@ -32,7 +32,7 @@ public class GetMilkDialog extends Dialog<MilkList>{
 			Month.DECEMBER);
 	
 	public GetMilkDialog(MilkList milkList) {
-		this.setTitle("Get Milk");
+		this.setTitle("Milk By Range");
 		
 		ButtonType insertButtonType = new ButtonType("Retrieve", ButtonData.OK_DONE);
 		this.getDialogPane().getButtonTypes().addAll(insertButtonType, ButtonType.CANCEL);
@@ -44,10 +44,15 @@ public class GetMilkDialog extends Dialog<MilkList>{
 		
 		//creation of boxes to return the information requested
 		ComboBox<Month> startMonth = new ComboBox<>(months);
+		startMonth.setPromptText("Starting Month");
 		ComboBox<Month> endMonth = new ComboBox<>(months);
+		endMonth.setPromptText("Ending Month");
 		TextField startYear = new TextField();
+		startYear.setPromptText("Starting Year");
 		TextField endYear = new TextField();
+		endYear.setPromptText("Ending Year");
 		TextField farm = new TextField();
+		farm.setPromptText("Farm");
 		
 		//adding boxes to grid
 		grid.add(new Label("Farm Name:"), 0, 0);
@@ -114,11 +119,12 @@ public class GetMilkDialog extends Dialog<MilkList>{
 							.getFromFarm(farmName));
 					
 				}
+				//creating popup of new range
 				MilkStatsTable table = new MilkStatsTable(specificMilkList);
 				Dialog<MilkList> dialog = new Dialog<>();
 				dialog.getDialogPane().setContent(table);
 				ButtonType okButtonType = new ButtonType("Ok", ButtonData.OK_DONE);
-				dialog.getDialogPane().getButtonTypes().addAll(okButtonType, ButtonType.CANCEL);
+				dialog.getDialogPane().getButtonTypes().addAll(okButtonType);
 				dialog.show();
 				return specificMilkList;
 				

@@ -23,7 +23,15 @@ public class MilkStatsTable extends HBox{
 		TableColumn<MilkData, String> farm = new TableColumn<>("Farm");
 		TableColumn<MilkData, String> milkPer = new TableColumn<>("Milk %");
 		TableColumn<MilkData, String> milkWeight = new TableColumn<>("Milk Weight (lbs)");
+		TableColumn<MilkData, String> date = new TableColumn<>("Date");
 		final ObservableList<MilkData> data = FXCollections.observableArrayList(milkList);
+		//adding features of MilkData to the table
+		date.setCellValueFactory(new Callback<CellDataFeatures<MilkData, String>, ObservableValue<String>>() {
+			@Override
+			public ObservableValue<String> call(CellDataFeatures<MilkData, String> p) {
+				return new SimpleStringProperty(p.getValue().getFormattedDate());
+			}
+		});
 		
 		farm.setCellValueFactory(new Callback<CellDataFeatures<MilkData, String>, ObservableValue<String>>() {
 			@Override
@@ -45,12 +53,11 @@ public class MilkStatsTable extends HBox{
 				return new SimpleStringProperty(Double.toString(p.getValue().getMilkWeight()));
 			}
 		});
-		table.getColumns().addAll(farm, milkPer, milkWeight);
+		table.getColumns().addAll(farm, milkPer, milkWeight, date);
 		table.setItems(data);
-		
-		Format format = new SimpleDateFormat("MM/dd/yyyy");
-		Label max = new Label("Most Milk in a day on" + milkList.getMax().getFormattedDate() + " with " + milkList.getMax().getMilkWeight() + " pounds.");
-		Label min = new Label("Most Milk in a day on" + milkList.getMin().getFormattedDate() + " with " + milkList.getMin().getMilkWeight() + " pounds.");
+		//creating data analysis
+		Label max = new Label("Most Milk in a day on " + milkList.getMax().getFormattedDate() + " with " + milkList.getMax().getMilkWeight() + " pounds.");
+		Label min = new Label("Most Milk in a day on " + milkList.getMin().getFormattedDate() + " with " + milkList.getMin().getMilkWeight() + " pounds.");
 		Label average = new Label("Average milk on entry is " + milkList.getMean() + " pounds.");
 		Label total = new Label("Total milk produced is " + milkList.getSum() + " pounds.");
 		VBox vbox = new VBox();
