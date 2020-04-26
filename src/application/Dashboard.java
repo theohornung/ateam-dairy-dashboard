@@ -73,8 +73,19 @@ public class Dashboard extends BorderPane {
 			}
 		});
 		
-		// TODO implement remove button
+		// Create remove button
 		Button removeMilk = new Button("Remove milk");
+		RemoveMilkDialog milkRemover = new RemoveMilkDialog();
+		//sets remove button operation
+		removeMilk.setOnMouseClicked(e -> {
+			Optional<MilkData> data = milkRemover.showAndWait();
+			if (data.isPresent()) {
+				MilkData milk = data.get();
+				masterList.remove(milk.getFarmName(), milk.getDate());
+				farmTable.updateStatistics(masterList);
+			}
+		});
+		
 		
 		GetMilkDialog getMilk = new GetMilkDialog(masterList);
 		Button milkByRange = new Button("Milk By Range");

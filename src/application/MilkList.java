@@ -1,5 +1,6 @@
 package application;
 
+import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
 
@@ -80,7 +81,22 @@ public class MilkList extends ArrayList<MilkData> implements IMilkList {
 		}
 		return farmMilk;
 	}
-	
+	/**
+	 * Removes all farm milk that has matching farm name and date
+	 * @param name
+	 * @param date
+	 */
+	public void remove(String name, LocalDate date) {
+		ArrayList<MilkData> removal = new ArrayList<MilkData>(); //avoid concurrent remove error
+		for (MilkData data : this) {
+			if (data.getFarmName().equals(name) && data.getDate().equals(date)) {
+				removal.add(data); //gets all matching data to remove
+			}
+		}
+		for (MilkData data : removal) {
+			this.remove(data); //goes back and removes data
+		}
+	}
 	/**
 	 * finds the MilkData with the minimum milk weight in the list
 	 * @return - MilkData

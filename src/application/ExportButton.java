@@ -1,18 +1,17 @@
 package application;
 
 import java.io.File;
-import java.io.IOException;
 
 import application.interfaces.IFileService;
 import application.interfaces.IMilkList;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.Alert.AlertType;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 /**
  * Handles exporting milk data
- * 
- * TODO add file service param
  */
 public class ExportButton extends Button {
 
@@ -30,8 +29,11 @@ public class ExportButton extends Button {
 				// write to file
 				try {
 					fileService.writeCsv(export.getAbsolutePath(), list);
-				} catch (IOException e1) {
-					// TODO alert that the write failed
+				} catch (Exception e1) {
+					// alert that the write failed
+					Alert alert = new Alert(AlertType.ERROR);
+					alert.setContentText("Failed to write " + export.getName());
+					alert.showAndWait();
 				}
 			}
 		});

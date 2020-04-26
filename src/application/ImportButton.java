@@ -1,18 +1,17 @@
 package application;
 
 import java.io.File;
-import java.io.IOException;
 
 import application.interfaces.IFileService;
 import application.interfaces.IMilkList;
 import javafx.scene.control.Button;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 /*
  * Handles importing milk data
- * 
- * TODO add file service param
  */
 public class ImportButton extends Button {
 
@@ -37,9 +36,13 @@ public class ImportButton extends Button {
 					milkList.addAll(fileService.readCsv(importFile.getAbsolutePath()));
 					statsTable.updateStatistics(milkList);
 					
-				} catch (IOException e1) {
+				} catch (Exception e1) {
 					// restore data if a bad file is chosen
-					// TODO add alert here
+					
+					Alert alert = new Alert(AlertType.ERROR);
+					alert.setContentText(importFile.getName() + " is invalid.");
+					alert.showAndWait();
+					
 					milkList.addAll(backup);
 				}
 			}
