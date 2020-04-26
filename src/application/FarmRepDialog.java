@@ -2,26 +2,38 @@ package application;
 
 import java.time.Month;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
+
+import application.interfaces.IMilkList;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.layout.GridPane;
+import javafx.util.Callback;
 
 /**
  * A dialog that takes in data to create new milk data
  */
-public class FarmRepDialog extends Dialog<MilkData> {
+public class FarmRepDialog extends Dialog<MilkList> {
 
-	public FarmRepDialog() {
+	@SuppressWarnings("unchecked")
+	public FarmRepDialog(IMilkList mainList) {
 		this.setTitle("Farm Report");
 		this.setHeaderText("Please put in a farm name and year");
 
-		ButtonType removeButtonType = new ButtonType("Display", ButtonData.OK_DONE);
-		this.getDialogPane().getButtonTypes().addAll(removeButtonType, ButtonType.CANCEL);
+		ButtonType displayButtonType = new ButtonType("Display", ButtonData.OK_DONE);
+		this.getDialogPane().getButtonTypes().addAll(displayButtonType, ButtonType.CANCEL);
 
 		GridPane grid = new GridPane();
 		grid.setHgap(10);
@@ -41,55 +53,88 @@ public class FarmRepDialog extends Dialog<MilkData> {
 		grid.add(new Label("Year:"), 0, 1);
 		grid.add(year, 1, 1);
 
-		Node loginButton = this.getDialogPane().lookupButton(removeButtonType);
-		// can change to true to add reqs to inserting
-		loginButton.setDisable(false);
+		Node removeButton = this.getDialogPane().lookupButton(displayButtonType);
+		// can change to true to add reqs to report
+		removeButton.setDisable(false);
 
 		this.getDialogPane().setContent(grid);
-
-		// set the dialog to return a MilkData obj after submitting valid data
+		
 		this.setResultConverter(dialogButton -> {
-			if (dialogButton == removeButtonType) {
-				try {
-					// check for invalid date
-					if (isValidDate(1, Month.JANUARY, Integer.parseInt(year.getText()))) {
-						MilkData data = new MilkData(
-								farmName.getText(),
-								-1, //filler weight
-								1,
-								Month.JANUARY,
-								Integer.parseInt(year.getText()));
-						return data;
+			if (dialogButton == displayButtonType) {
+				int curYear = Integer.parseInt(year.getText());
+				String farmId = farmName.getText();
+				MilkList yearMilk = new MilkList();
+				for (MilkData data : mainList) {
+					if (data.getDate().getYear() == curYear) {
+						yearMilk.add(data);
 					}
 				}
-				catch (NumberFormatException e) {
-					// don't allow invalid number fields
-					// TODO (possibly) add field validation for dialogs
+				MilkList farmList = new MilkList();
+				for (MilkData data : yearMilk) {
+					if (data.getFarmName().equals(farmId)) {
+						farmList.add(data);
+					}
 				}
+				Collections.sort(farmList, new SortByDate());
+				MilkList comp = new MilkList();
+				for (int j = 1; j < 13; j++) {
+					int monthWeight = monthComposite(farmList, j);
+					MilkData toAdd = new MilkData(farmId, monthWeight, 1, Month.of(j), curYear);
+					comp.add(toAdd);
+				}
+				
+				
+				
+				MilkStatsTable newTable = new MilkStatsTable(comp);
+				MilkTable opTable = newTable.getTable();
+				opTable.getColumns().remove(1); //removes the default percent column
+				opTable.getColumns().remove(2); //removes the default date column
+				
+				TableColumn<MilkData, String> milkPer = new TableColumn<>("Milk % of Month Total");
+				TableColumn<MilkData, String> month = new TableColumn<>("Month");
+				milkPer.setCellValueFactory(new Callback<CellDataFeatures<MilkData, String>, ObservableValue<String>>() {
+					@Override
+					public ObservableValue<String> call(CellDataFeatures<MilkData, String> p) {
+						return new SimpleStringProperty(Double.toString(Math.floor(1000*p.getValue().getPercentOf(
+								monthComposite(yearMilk, p.getValue().getDate().getMonthValue())) * 100)/1000) + "%");
+					}
+				});
+				month.setCellValueFactory(new Callback<CellDataFeatures<MilkData, String>, ObservableValue<String>>() {
+					@Override
+					public ObservableValue<String> call(CellDataFeatures<MilkData, String> p) {
+						return new SimpleStringProperty(p.getValue().getDate().getMonth().toString());
+					}
+				});
+				opTable.getColumns().addAll(milkPer, month);
+				
+				newTable.monthStatistics(comp);
+				Dialog<MilkList> dialog = new Dialog<>();
+				dialog.getDialogPane().setContent(newTable);
+				ButtonType okButtonType = new ButtonType("Ok", ButtonData.OK_DONE);
+				dialog.getDialogPane().getButtonTypes().addAll(okButtonType);
+				dialog.show();
 			}
 			return null;
 		});
 	}
 
-	/**
-	 * Helper method to check for invalid date
-	 * 
-	 * @param day
-	 * @param month
-	 * @param year
-	 * @return true if the given date is valid
-	 */
-	private boolean isValidDate(int day, Month month, int year) {
-		Calendar.Builder builder = new Calendar.Builder();
-		builder.setLenient(false);
-		try {
-			builder.setDate(year, month.ordinal(), day);
-			builder.build();
+	private int monthComposite(MilkList compList, int month) {
+		int monthWeight = 0;
+		for (MilkData data : compList) {
+			if (data.getDate().getMonthValue() == month) {
+				monthWeight += data.getMilkWeight();
+			}
 		}
-		// build() throws when the given date is invalid
-		catch (IllegalArgumentException e) {
-			return false;
-		}
-		return true;
+		return monthWeight;
 	}
+
+	public class SortByDate implements Comparator<MilkData> {
+
+		@Override
+		public int compare(MilkData o1, MilkData o2) {
+			// TODO Auto-generated method stub
+			return o1.getDate().compareTo(o2.getDate());
+		}
+	}
+
 }

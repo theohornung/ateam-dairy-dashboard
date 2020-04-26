@@ -86,6 +86,15 @@ public class Dashboard extends BorderPane {
 			}
 		});
 		
+
+		
+		//button to display farm report table
+		Button farmReport = new Button("Farm Report");
+		FarmRepDialog farmDia = new FarmRepDialog(masterList);
+		farmReport.setOnMouseClicked(e -> farmDia.showAndWait());
+			
+		
+		Button annReport = new Button("Annual Report");
 		
 		GetMilkDialog getMilk = new GetMilkDialog(masterList);
 		Button milkByRange = new Button("Milk By Range");
@@ -95,7 +104,7 @@ public class Dashboard extends BorderPane {
 		Button importButton = new ImportButton(primaryStage, fileService, masterList, farmTable);
 		Button exportButton = new ExportButton(primaryStage, fileService, masterList);
 		
-		buttons.getChildren().addAll(importButton, exportButton, addMilk, removeMilk, milkByRange, helpButton);
+		buttons.getChildren().addAll(importButton, exportButton, addMilk, removeMilk, farmReport, milkByRange, helpButton);
 		this.setTop(buttons);
 	}
 
