@@ -2,7 +2,6 @@ package application;
 
 import java.time.Month;
 import java.util.ArrayList;
-import java.util.Collections;
 
 import application.interfaces.IMilkList;
 

@@ -10,7 +10,7 @@ import javafx.scene.Scene;
 public class Main extends Application {
 	
 	private static final int WINDOW_HEIGHT = 400;
-	private static final int WINDOW_WIDTH = 550;
+	private static final int WINDOW_WIDTH = 700;
 	
 	@Override
 	public void start(Stage primaryStage) {

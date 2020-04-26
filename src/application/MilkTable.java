@@ -1,5 +1,6 @@
 package application;
 
+import application.interfaces.IMilkList;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -13,19 +14,14 @@ import javafx.util.Callback;
  * A table to display milk production data points
  */
 public class MilkTable extends TableView<MilkData> {
-
-	private int totalMilk;
-
 	@SuppressWarnings("unchecked")
-	public MilkTable() {
-
-		totalMilk = 0;
-
+	public MilkTable(IMilkList milkList) {
+		this.setPrefWidth(380);
 		TableColumn<MilkData, String> farm = new TableColumn<>("Farm");
 		TableColumn<MilkData, String> milkPer = new TableColumn<>("Milk %");
 		TableColumn<MilkData, String> milkWeight = new TableColumn<>("Milk Weight (lbs)");
 		TableColumn<MilkData, String> date = new TableColumn<>("Date");
-
+		final ObservableList<MilkData> data = FXCollections.observableArrayList(milkList);
 		// describes how each column should handle milk data
 		date.setCellValueFactory(new Callback<CellDataFeatures<MilkData, String>, ObservableValue<String>>() {
 			@Override
@@ -34,7 +30,6 @@ public class MilkTable extends TableView<MilkData> {
 			}
 		});
 		
-		final ObservableList<MilkData> data = FXCollections.observableArrayList();
 		farm.setCellValueFactory(new Callback<CellDataFeatures<MilkData, String>, ObservableValue<String>>() {
 			@Override
 			public ObservableValue<String> call(CellDataFeatures<MilkData, String> p) {
@@ -45,14 +40,14 @@ public class MilkTable extends TableView<MilkData> {
 		milkPer.setCellValueFactory(new Callback<CellDataFeatures<MilkData, String>, ObservableValue<String>>() {
 			@Override
 			public ObservableValue<String> call(CellDataFeatures<MilkData, String> p) {
-				return new SimpleStringProperty(Double.toString(p.getValue().getPercentOf(totalMilk) * 100) + "%");
+				return new SimpleStringProperty(Double.toString(Math.floor(1000*p.getValue().getPercentOf((int)milkList.getSum()) * 100)/1000) + "%");
 			}
 		});
 
 		milkWeight.setCellValueFactory(new Callback<CellDataFeatures<MilkData, String>, ObservableValue<String>>() {
 			@Override
 			public ObservableValue<String> call(CellDataFeatures<MilkData, String> p) {
-				return new SimpleStringProperty(Double.toString(p.getValue().getMilkWeight()));
+				return new SimpleStringProperty(Integer.toString((int) p.getValue().getMilkWeight()));
 			}
 		});
 
@@ -61,19 +56,11 @@ public class MilkTable extends TableView<MilkData> {
 		this.setItems(data);
 	}
 
-	public int getTotalMilk() {
-		return totalMilk;
-	}
-
-	public void addMilkWeight(double additionalMilk) {
-		totalMilk += additionalMilk;
-	}
 	
 	/**
 	 * reset the table
 	 */
 	public void reset() {
-		totalMilk = 0;
 		this.getItems().removeAll(this.getItems());
 	}
 }
