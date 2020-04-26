@@ -18,17 +18,20 @@ import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.layout.GridPane;
 
 /**
- * A dialog that takes in data to create new milk data
+ * A dialog that takes in data to remove milk data
  */
 public class RemoveMilkDialog extends Dialog<MilkData> {
-
+	/**
+	 * Makes dialog to take in info and then return a milk value to delete based off of
+	 */
 	public RemoveMilkDialog() {
 		this.setTitle("Remove Milk");
 		this.setHeaderText("Please put in the following milk values");
 
-		ButtonType insertButtonType = new ButtonType("Remove", ButtonData.OK_DONE);
-		this.getDialogPane().getButtonTypes().addAll(insertButtonType, ButtonType.CANCEL);
+		ButtonType removeButtonType = new ButtonType("Remove", ButtonData.OK_DONE);
+		this.getDialogPane().getButtonTypes().addAll(removeButtonType, ButtonType.CANCEL);
 
+		//grid for text options
 		GridPane grid = new GridPane();
 		grid.setHgap(10);
 		grid.setVgap(10);
@@ -37,10 +40,12 @@ public class RemoveMilkDialog extends Dialog<MilkData> {
 		TextField farmName = new TextField();
 		farmName.setPromptText("Farm Name");
 		
+		//dropdown box for days
 		ObservableList<Integer> days = FXCollections.observableArrayList(
 				IntStream.rangeClosed(1, 31).boxed().collect(Collectors.toList()));
 		ComboBox<Integer> day = new ComboBox<>(days);
 		
+		//dropdown box for months
 		ObservableList<Month> months = FXCollections.observableArrayList(
 				Month.JANUARY,
 				Month.FEBRUARY,
@@ -59,7 +64,7 @@ public class RemoveMilkDialog extends Dialog<MilkData> {
 		TextField year = new TextField();
 		year.setPromptText("Year");
 
-		
+		//ads labels to display
 		grid.add(new Label("Farm Name:"), 0, 0);
 		grid.add(farmName, 1, 0);
 		grid.add(new Label("Day:"), 0, 1);
@@ -69,16 +74,16 @@ public class RemoveMilkDialog extends Dialog<MilkData> {
 		grid.add(new Label("Year:"), 0, 3);
 		grid.add(year, 1, 3);
 
-		Node loginButton = this.getDialogPane().lookupButton(insertButtonType);
+		Node removeButton = this.getDialogPane().lookupButton(removeButtonType);
 		// can change to true to add reqs to inserting
-		loginButton.setDisable(false);
+		removeButton.setDisable(false);
 
 		this.getDialogPane().setContent(grid);
 
 		// set the dialog to return a MilkData obj after submitting valid data
 		//TODO make date optional
 		this.setResultConverter(dialogButton -> {
-			if (dialogButton == insertButtonType) {
+			if (dialogButton == removeButtonType) {
 				try {
 					// check for invalid date
 					if (isValidDate(day.getValue(), month.getValue(), Integer.parseInt(year.getText()))) {

@@ -32,9 +32,9 @@ public class AnnualRepDialog extends Dialog<String> {
 		grid.add(new Label("Year:"), 0, 0);
 		grid.add(year, 1, 0);
 
-		Node loginButton = this.getDialogPane().lookupButton(displayButtonType);
+		Node dispButton = this.getDialogPane().lookupButton(displayButtonType);
 		// can change to true to add reqs to inserting
-		loginButton.setDisable(false);
+		dispButton.setDisable(false);
 
 		this.getDialogPane().setContent(grid);
 
