@@ -74,6 +74,7 @@ public class GetMilkDialog extends Dialog<MilkList>{
 
 
 		this.setResultConverter(dialogButton -> {
+			if (dialogButton.getText().equalsIgnoreCase("cancel")) return null;
 			MilkList specificMilkList = null;
 			
 			int startingMonth;
