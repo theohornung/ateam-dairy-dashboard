@@ -15,7 +15,7 @@ import javafx.stage.Stage;
  */
 public class ImportButton extends Button {
 
-	public ImportButton(Stage primaryStage, IFileService fileService, IMilkList milkList, MilkTable table) {
+	public ImportButton(Stage primaryStage, IFileService fileService, IMilkList milkList, MilkStatsTable statsTable) {
 		IMilkList backup = milkList;
 		this.setText("Import");
 
@@ -34,8 +34,7 @@ public class ImportButton extends Button {
 				try {
 					// add all new data to the list, then table
 					milkList.addAll(fileService.readCsv(importFile.getAbsolutePath()));
-					table.reset();
-					table.getItems().addAll(milkList);
+					statsTable.updateStatistics(milkList);
 					
 				} catch (Exception e1) {
 					// restore data if a bad file is chosen
