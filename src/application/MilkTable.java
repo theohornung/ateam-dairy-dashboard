@@ -16,10 +16,11 @@ import javafx.util.Callback;
 public class MilkTable extends TableView<MilkData> {
 	@SuppressWarnings("unchecked")
 	public MilkTable(IMilkList milkList) {
-		this.setPrefWidth(380);
+		this.setPrefWidth(450);
 		TableColumn<MilkData, String> farm = new TableColumn<>("Farm");
 		TableColumn<MilkData, String> milkPer = new TableColumn<>("Milk %");
 		TableColumn<MilkData, String> milkWeight = new TableColumn<>("Milk Weight (lbs)");
+		milkWeight.setMinWidth(120);
 		TableColumn<MilkData, String> date = new TableColumn<>("Date");
 		final ObservableList<MilkData> data = FXCollections.observableArrayList(milkList);
 		// describes how each column should handle milk data

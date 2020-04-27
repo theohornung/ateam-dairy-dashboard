@@ -76,9 +76,11 @@ public class AnnualRepDialog extends Dialog<MilkList> {
 				opTable.getColumns().remove(3); //removes date since year is only thing needed
 				
 				newTable.yearStatistics(nameComp);
+				opTable.setPrefWidth(260);
 				
 				Dialog<MilkList> dialog = new Dialog<>();
 				BorderPane pane = new BorderPane();
+				newTable.autosize();
 				pane.setCenter(newTable);
 				HBox buttonBox = new HBox();
 				
@@ -103,7 +105,6 @@ public class AnnualRepDialog extends Dialog<MilkList> {
 				buttonBox.getChildren().addAll(byFarm, ascend, descend);
 				pane.setBottom(buttonBox);
 				
-				dialog.setWidth(400);
 				dialog.getDialogPane().setContent(pane);
 				ButtonType okButtonType = new ButtonType("Ok", ButtonData.OK_DONE);
 				dialog.getDialogPane().getButtonTypes().addAll(okButtonType);

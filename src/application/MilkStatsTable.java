@@ -30,8 +30,8 @@ public class MilkStatsTable extends HBox{
 		//creating data analysis
 		Label max = new Label("Most Milk:\n" + milkList.getMax().getFarmName() + " on " + milkList.getMax().getFormattedDate() + " with " + (int) milkList.getMax().getMilkWeight() + " pounds.");
 		Label min = new Label("Least Milk:\n" + milkList.getMin().getFarmName() + " on " + milkList.getMin().getFormattedDate() + " with " + (int) milkList.getMin().getMilkWeight() + " pounds.");
-		Label average = new Label("Average milk on entry is " + Math.round(milkList.getMean() * 10)/10.0 + " pounds.");
-		Label total = new Label("Total milk produced is " + Math.round(milkList.getSum() *10)/10.0 + " pounds.");
+		Label average = new Label("Average milk on entry is " + String.format("%.1f", milkList.getMean()) + " pounds.");
+		Label total = new Label("Total milk produced is " + String.format("%.1f", milkList.getSum())  + " pounds.");
 		vbox = new VBox(10);
 		vbox.setPrefWidth(400);
 		vbox.getChildren().addAll(max, min, average, total);
@@ -47,8 +47,8 @@ public class MilkStatsTable extends HBox{
 		String farmName = milkList.getMax().getFarmName();
 		Label max = new Label("Most Milk:\n" + farmName + " in " + milkList.getMax().getDate().getMonth().toString() + " with " + (int) milkList.getMax().getMilkWeight() + " pounds.");
 		Label min = new Label("Least Milk:\n" + farmName + " in " + milkList.getMin().getDate().getMonth().toString() + " with " + (int) milkList.getMin().getMilkWeight() + " pounds.");
-		Label average = new Label("Average milk produced by " + farmName + " in each month is "+ Math.round(milkList.getMean() * 10)/10.0 + " pounds.");
-		Label total = new Label("Total milk produced in " + milkList.getMax().getDate().getYear() + " by " + farmName + " is " + Math.round(milkList.getSum() *10)/10.0 + " pounds.");
+		Label average = new Label("Average milk produced by " + farmName + " in each month is "+ String.format("%.1f", milkList.getMean()) + " pounds.");
+		Label total = new Label("Total milk produced in " + milkList.getMax().getDate().getYear() + " by " + farmName + " is " + String.format("%.1f", milkList.getSum()) + " pounds.");
 		vbox = new VBox(10);
 		vbox.setPrefWidth(400);
 		vbox.getChildren().addAll(max, min, average, total);
@@ -64,8 +64,8 @@ public class MilkStatsTable extends HBox{
 		String year = Integer.toString(milkList.getMax().getDate().getYear());
 		Label max = new Label("Most Milk in " + year + ":\n" + milkList.getMax().getFarmName() + " with " + (int) milkList.getMax().getMilkWeight() + " pounds.");
 		Label min = new Label("Least Milk in " + year + ":\n" + milkList.getMin().getFarmName()  + " with " + (int) milkList.getMin().getMilkWeight() + " pounds.");
-		Label average = new Label("Average milk produced by farms in " + year + " is "+ Math.round(milkList.getMean() * 10)/10.0 + " pounds.");
-		Label total = new Label("Total milk produced in " + year + " is " + Math.round(milkList.getSum() *10)/10.0 + " pounds.");
+		Label average = new Label("Average milk produced by farms in " + year + " is "+ String.format("%.1f", milkList.getMean()) + " pounds.");
+		Label total = new Label("Total milk produced in " + year + " is " + String.format("%.1f", milkList.getSum()) + " pounds.");
 		vbox = new VBox(10);
 		vbox.setPrefWidth(400);
 		vbox.getChildren().addAll(max, min, average, total);
