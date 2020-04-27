@@ -1,15 +1,12 @@
 package application;
 
 import java.time.Month;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 
 import application.interfaces.IMilkList;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.ButtonType;
@@ -105,8 +102,12 @@ public class FarmRepDialog extends Dialog<MilkList> {
 				milkPer.setCellValueFactory(new Callback<CellDataFeatures<MilkData, String>, ObservableValue<String>>() {
 					@Override
 					public ObservableValue<String> call(CellDataFeatures<MilkData, String> p) {
-						return new SimpleStringProperty(Double.toString(Math.floor(1000*p.getValue().getPercentOf(
-								monthComposite(yearMilk, p.getValue().getDate().getMonthValue())) * 100)/1000) + "%");
+						double percent = Math.floor(1000*p.getValue().getPercentOf(
+								monthComposite(yearMilk, p.getValue().getDate().getMonthValue())) * 100)/1000;
+						if (Double.isNaN(percent)) {
+							return new SimpleStringProperty("-");
+						}
+						return new SimpleStringProperty(Double.toString(percent) + "%");
 					}
 				});
 				//will exclusively display month
