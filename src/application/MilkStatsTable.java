@@ -5,7 +5,6 @@ import application.interfaces.IMilkList;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Label;
-import javafx.scene.control.Separator;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 public class MilkStatsTable extends HBox{

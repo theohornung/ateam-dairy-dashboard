@@ -139,7 +139,7 @@ public class GetMilkDialog extends Dialog<MilkList>{
 				newTable = null;
 				return specificMilkList;
 			}else {
-				Alert alert = new Alert(AlertType.WARNING);
+				Alert alert = new Alert(AlertType.ERROR);
 				alert.setTitle("Warning");
 				alert.setHeaderText("Illegal Range Provided!");
 				alert.setContentText("Please respecify range.");
