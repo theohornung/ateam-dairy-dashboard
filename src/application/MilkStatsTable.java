@@ -73,6 +73,25 @@ public class MilkStatsTable extends HBox{
 		this.getChildren().addAll(table, vbox);
 	}
 	
+	public void monthreStatistics(IMilkList milkList) {
+		final ObservableList<MilkData> data = FXCollections.observableArrayList(milkList);
+		table.reset();
+		table.setItems(data);
+		//creating data analysis
+		String month = milkList.getMax().getDate().getMonth().toString() ;
+		int year = milkList.getMax().getDate().getYear();
+		Label years = new Label("Stats for year " + year + " in month " + month);
+		Label max = new Label("Most Milk:\n" + milkList.getMax().getFarmName() + " in " + month + " with " + (int) milkList.getMax().getMilkWeight() + " pounds.");
+		Label min = new Label("Least Milk:\n" + milkList.getMin().getFarmName() + " in " + month + " with " + (int) milkList.getMin().getMilkWeight() + " pounds.");
+		Label average = new Label("Average milk produced in " + month + " is " + String.format("%.1f", milkList.getMean()) + " pounds.");
+		Label total = new Label("Total milk produced in " + month + " is " + String.format("%.1f", milkList.getSum()) + " pounds.");
+		vbox = new VBox(10);
+		vbox.setPrefWidth(400);
+		vbox.getChildren().addAll(years, max, min, average, total);
+		this.getChildren().clear();
+		this.getChildren().addAll(table, vbox);
+	}
+	
 	public MilkTable getTable(){
 		return table;
 	}

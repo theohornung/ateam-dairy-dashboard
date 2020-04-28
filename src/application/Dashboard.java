@@ -97,6 +97,10 @@ public class Dashboard extends BorderPane {
 		AnnualRepDialog annDia = new AnnualRepDialog(masterList);
 		annReport.setOnMouseClicked(e -> annDia.showAndWait());
 		
+		Button monthReport = new Button("Month Report");
+		MonthRepDialog monDia = new MonthRepDialog(masterList);
+		monthReport.setOnMouseClicked(e -> monDia.showAndWait());
+		
 		GetMilkDialog getMilk = new GetMilkDialog(masterList);
 		Button milkByRange = new Button("Milk By Range");
 		milkByRange.setOnMouseClicked(e -> getMilk.showAndWait());
@@ -105,7 +109,7 @@ public class Dashboard extends BorderPane {
 		Button importButton = new ImportButton(primaryStage, fileService, masterList, farmTable);
 		Button exportButton = new ExportButton(primaryStage, fileService, masterList);
 		
-		buttons.getChildren().addAll(importButton, exportButton, addMilk, removeMilk, farmReport, annReport, milkByRange, helpButton);
+		buttons.getChildren().addAll(importButton, exportButton, addMilk, removeMilk, farmReport, annReport, monthReport, milkByRange, helpButton);
 		this.setTop(buttons);
 	}
 
