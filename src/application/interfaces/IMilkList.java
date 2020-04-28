@@ -1,5 +1,6 @@
 package application.interfaces;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import application.MilkData;
@@ -52,4 +53,9 @@ public interface IMilkList extends List<MilkData> {
 	 * @return sum of milk in the collection
 	 */
 	public double getSum();
+	/**
+	 * @param farmName
+	 * @param date
+	 */
+	public void remove(String farmName, LocalDate date);
 }

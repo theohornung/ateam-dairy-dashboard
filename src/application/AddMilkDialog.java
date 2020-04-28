@@ -95,6 +95,7 @@ public class AddMilkDialog extends Dialog<MilkData> {
 					}
 				}
 				catch (NumberFormatException e) {
+					
 					// don't allow invalid number fields
 					// TODO (possibly) add field validation for dialogs
 				}

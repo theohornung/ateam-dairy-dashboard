@@ -73,8 +73,33 @@ public class Dashboard extends BorderPane {
 			}
 		});
 		
-		// TODO implement remove button
+		// Create remove button
 		Button removeMilk = new Button("Remove milk");
+		RemoveMilkDialog milkRemover = new RemoveMilkDialog();
+		//sets remove button operation
+		removeMilk.setOnMouseClicked(e -> {
+			Optional<MilkData> data = milkRemover.showAndWait();
+			if (data.isPresent()) {
+				MilkData milk = data.get();
+				masterList.remove(milk.getFarmName(), milk.getDate());
+				farmTable.updateStatistics(masterList);
+			}
+		});
+		
+
+		
+		//button to display farm report table
+		Button farmReport = new Button("Farm Report");
+		FarmRepDialog farmDia = new FarmRepDialog(masterList);
+		farmReport.setOnMouseClicked(e -> farmDia.showAndWait());
+			
+		Button annReport = new Button("Annual Report");
+		AnnualRepDialog annDia = new AnnualRepDialog(masterList);
+		annReport.setOnMouseClicked(e -> annDia.showAndWait());
+		
+		Button monthReport = new Button("Month Report");
+		MonthRepDialog monDia = new MonthRepDialog(masterList);
+		monthReport.setOnMouseClicked(e -> monDia.showAndWait());
 		
 		GetMilkDialog getMilk = new GetMilkDialog(masterList);
 		Button milkByRange = new Button("Milk By Range");
@@ -84,7 +109,7 @@ public class Dashboard extends BorderPane {
 		Button importButton = new ImportButton(primaryStage, fileService, masterList, farmTable);
 		Button exportButton = new ExportButton(primaryStage, fileService, masterList);
 		
-		buttons.getChildren().addAll(importButton, exportButton, addMilk, removeMilk, milkByRange, helpButton);
+		buttons.getChildren().addAll(importButton, exportButton, addMilk, removeMilk, farmReport, annReport, monthReport, milkByRange, helpButton);
 		this.setTop(buttons);
 	}
 
