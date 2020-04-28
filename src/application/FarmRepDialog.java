@@ -9,12 +9,14 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.layout.GridPane;
 import javafx.util.Callback;
@@ -63,70 +65,78 @@ public class FarmRepDialog extends Dialog<MilkList> {
 		//dictates what occurs when display pressed
 		this.setResultConverter(dialogButton -> {
 			if (dialogButton == displayButtonType) {
-				//get year and name
-				int curYear = Integer.parseInt(year.getText());
-				String farmId = farmName.getText();
-				MilkList yearMilk = new MilkList();
-				//gather all milk data for year into list
-				for (MilkData data : mainList) {
-					if (data.getDate().getYear() == curYear) {
-						yearMilk.add(data);
-					}
-				}
-				//gather the farm data for that year into diff list
-				MilkList farmList = new MilkList();
-				for (MilkData data : yearMilk) {
-					if (data.getFarmName().equals(farmId)) {
-						farmList.add(data);
-					}
-				}
-				//sort list by months
-				Collections.sort(farmList, new SortByDate());
-				MilkList comp = new MilkList();
-				//now makes new data that composites all of the farms contributions in a month together
-				for (int j = 1; j < 13; j++) {
-					int monthWeight = monthComposite(farmList, j); //weight contributed in month
-					MilkData toAdd = new MilkData(farmId, monthWeight, 1, Month.of(j), curYear); //1 is filler day
-					comp.add(toAdd);
-				}
-				
-				//new table to display
-				MilkStatsTable newTable = new MilkStatsTable(comp);
-				MilkTable opTable = newTable.getTable();
-				opTable.getColumns().remove(1); //removes the default percent column
-				opTable.getColumns().remove(2); //removes the default date column
-				
-				TableColumn<MilkData, String> milkPer = new TableColumn<>("Milk % of Month Total");
-				TableColumn<MilkData, String> month = new TableColumn<>("Month");
-				//will calculate the total milk in a month by all farms that year and use that for percents
-				milkPer.setCellValueFactory(new Callback<CellDataFeatures<MilkData, String>, ObservableValue<String>>() {
-					@Override
-					public ObservableValue<String> call(CellDataFeatures<MilkData, String> p) {
-						double percent = Math.floor(1000*p.getValue().getPercentOf(
-								monthComposite(yearMilk, p.getValue().getDate().getMonthValue())) * 100)/1000;
-						if (Double.isNaN(percent)) {
-							return new SimpleStringProperty("-");
+				try {
+					//get year and name
+					int curYear = Integer.parseInt(year.getText());
+					String farmId = farmName.getText();
+					MilkList yearMilk = new MilkList();
+					//gather all milk data for year into list
+					for (MilkData data : mainList) {
+						if (data.getDate().getYear() == curYear) {
+							yearMilk.add(data);
 						}
-						return new SimpleStringProperty(Double.toString(percent) + "%");
 					}
-				});
-				//will exclusively display month
-				month.setCellValueFactory(new Callback<CellDataFeatures<MilkData, String>, ObservableValue<String>>() {
-					@Override
-					public ObservableValue<String> call(CellDataFeatures<MilkData, String> p) {
-						return new SimpleStringProperty(p.getValue().getDate().getMonth().toString());
+					//gather the farm data for that year into diff list
+					MilkList farmList = new MilkList();
+					for (MilkData data : yearMilk) {
+						if (data.getFarmName().equals(farmId)) {
+							farmList.add(data);
+						}
 					}
-				});
-				opTable.getColumns().addAll(milkPer, month);
-				
-				//display stats customized for farm report
-				newTable.monthStatistics(comp);
-				//displays dialog of results
-				Dialog<MilkList> dialog = new Dialog<>();
-				dialog.getDialogPane().setContent(newTable);
-				ButtonType okButtonType = new ButtonType("Ok", ButtonData.OK_DONE);
-				dialog.getDialogPane().getButtonTypes().addAll(okButtonType);
-				dialog.show();
+					//sort list by months
+					Collections.sort(farmList, new SortByDate());
+					MilkList comp = new MilkList();
+					//now makes new data that composites all of the farms contributions in a month together
+					for (int j = 1; j < 13; j++) {
+						int monthWeight = monthComposite(farmList, j); //weight contributed in month
+						MilkData toAdd = new MilkData(farmId, monthWeight, 1, Month.of(j), curYear); //1 is filler day
+						comp.add(toAdd);
+					}
+					
+					//new table to display
+					MilkStatsTable newTable = new MilkStatsTable(comp);
+					MilkTable opTable = newTable.getTable();
+					opTable.getColumns().remove(1); //removes the default percent column
+					opTable.getColumns().remove(2); //removes the default date column
+					
+					TableColumn<MilkData, String> milkPer = new TableColumn<>("Milk % of Month Total");
+					TableColumn<MilkData, String> month = new TableColumn<>("Month");
+					//will calculate the total milk in a month by all farms that year and use that for percents
+					milkPer.setCellValueFactory(new Callback<CellDataFeatures<MilkData, String>, ObservableValue<String>>() {
+						@Override
+						public ObservableValue<String> call(CellDataFeatures<MilkData, String> p) {
+							double percent = Math.floor(1000*p.getValue().getPercentOf(
+									monthComposite(yearMilk, p.getValue().getDate().getMonthValue())) * 100)/1000;
+							if (Double.isNaN(percent)) {
+								return new SimpleStringProperty("-");
+							}
+							return new SimpleStringProperty(Double.toString(percent) + "%");
+						}
+					});
+					//will exclusively display month
+					month.setCellValueFactory(new Callback<CellDataFeatures<MilkData, String>, ObservableValue<String>>() {
+						@Override
+						public ObservableValue<String> call(CellDataFeatures<MilkData, String> p) {
+							return new SimpleStringProperty(p.getValue().getDate().getMonth().toString());
+						}
+					});
+					opTable.getColumns().addAll(milkPer, month);
+					
+					//display stats customized for farm report
+					newTable.monthStatistics(comp);
+					//displays dialog of results
+					Dialog<MilkList> dialog = new Dialog<>();
+					dialog.getDialogPane().setContent(newTable);
+					ButtonType okButtonType = new ButtonType("Ok", ButtonData.OK_DONE);
+					dialog.getDialogPane().getButtonTypes().addAll(okButtonType);
+					dialog.show();
+				}
+				catch (Exception e) {
+					// alert to invalid input
+					Alert alert = new Alert(AlertType.ERROR);
+					alert.setContentText("Invalid field(s) provided!");
+					alert.showAndWait();
+				}
 			}
 			return null;
 		});

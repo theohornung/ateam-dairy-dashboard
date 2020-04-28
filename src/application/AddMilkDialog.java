@@ -14,6 +14,8 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.layout.GridPane;
 
@@ -94,10 +96,11 @@ public class AddMilkDialog extends Dialog<MilkData> {
 						return data;
 					}
 				}
-				catch (NumberFormatException e) {
-					
-					// don't allow invalid number fields
-					// TODO (possibly) add field validation for dialogs
+				catch (Exception e) {
+					// alert to invalid input
+					Alert alert = new Alert(AlertType.ERROR);
+					alert.setContentText("Invalid field(s) provided!");
+					alert.showAndWait();
 				}
 			}
 			return null;
