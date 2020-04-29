@@ -15,6 +15,13 @@ import javafx.stage.Stage;
  */
 public class ExportButton extends Button {
 
+	/**
+	 * Constructor to create button to handle exporting data
+	 * 
+	 * @param primaryStage the stage that the button belongs to
+	 * @param fileService a file service instance to perform file write operations
+	 * @param list the list of data to write
+	 */
 	public ExportButton(Stage primaryStage, IFileService fileService, IMilkList list) {
 		this.setText("Export");
 

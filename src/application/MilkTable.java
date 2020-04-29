@@ -14,6 +14,10 @@ import javafx.util.Callback;
  * A table to display milk production data points
  */
 public class MilkTable extends TableView<MilkData> {
+	/**
+	 * Creates a new MilkTable to display milk production data points
+	 * @param milkList the list of milk production data points to display
+	 */
 	@SuppressWarnings("unchecked")
 	public MilkTable(IMilkList milkList) {
 		this.setPrefWidth(450);
@@ -23,6 +27,7 @@ public class MilkTable extends TableView<MilkData> {
 		milkWeight.setMinWidth(120);
 		TableColumn<MilkData, String> date = new TableColumn<>("Date");
 		final ObservableList<MilkData> data = FXCollections.observableArrayList(milkList);
+		
 		// describes how each column should handle milk data
 		date.setCellValueFactory(new Callback<CellDataFeatures<MilkData, String>, ObservableValue<String>>() {
 			@Override

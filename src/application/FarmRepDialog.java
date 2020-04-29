@@ -8,7 +8,6 @@ import application.interfaces.IMilkList;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
-import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
@@ -46,19 +45,19 @@ public class FarmRepDialog extends Dialog<MilkList> {
 		grid.setVgap(10);
 		grid.setPadding(new Insets(20, 150, 10, 10));
 
-		TextField farmName = new TextField();
+		TextField farmName = new TextField(); // farm name field input
 		farmName.setPromptText("Farm Name");		
-		TextField year = new TextField();
+		TextField year = new TextField(); // year field input
 		year.setPromptText("Year");
 		
+		// add input fields to grid
 		grid.add(new Label("Farm Name:"), 0, 0);
 		grid.add(farmName, 1, 0);
 		grid.add(new Label("Year:"), 0, 1);
 		grid.add(year, 1, 1);
 
-		Node dispButton = this.getDialogPane().lookupButton(displayButtonType);
-		// can change to true to add reqs to report
-		dispButton.setDisable(false);
+		// keep display button enabled
+		this.getDialogPane().lookupButton(displayButtonType).setDisable(false);
 		//puts in display pane
 		this.getDialogPane().setContent(grid);
 		

@@ -5,7 +5,6 @@ import application.interfaces.IMilkList;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
-import javafx.scene.Node;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Dialog;
@@ -16,7 +15,11 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.layout.GridPane;
 
+/**
+ * Custom dialog to display a filtered list of milk data.
+ */
 public class GetMilkDialog extends Dialog<MilkList>{
+	// list of available months
 	private ObservableList<Month> months = FXCollections.observableArrayList(null,
 			Month.JANUARY,
 			Month.FEBRUARY,
@@ -31,9 +34,15 @@ public class GetMilkDialog extends Dialog<MilkList>{
 			Month.NOVEMBER,
 			Month.DECEMBER);
 
+	/**
+	 * Constructor to create a new GetMilkDialog object.
+	 * 
+	 * @param milkList the list of milk data that will be filtered
+	 */
 	public GetMilkDialog(IMilkList milkList) {
 		this.setTitle("Milk By Range");
 
+		// setup confirmation button to get filtered data
 		ButtonType retrieveButtonType = new ButtonType("Retrieve");
 		this.getDialogPane().getButtonTypes().addAll(retrieveButtonType, ButtonType.CANCEL);
 		this.setHeaderText("Please enter parameters to search from:");
@@ -67,13 +76,12 @@ public class GetMilkDialog extends Dialog<MilkList>{
 
 		this.getDialogPane().setContent(grid);
 
-		Node loginButton = this.getDialogPane().lookupButton(retrieveButtonType);
+		// keep retrieve button from being disabled
+		this.getDialogPane().lookupButton(retrieveButtonType).setDisable(false);
 
-
-		loginButton.setDisable(false);
-
-
+		// define exit behavior for dialog
 		this.setResultConverter(dialogButton -> {
+			// special case when the cancel button attempts to process data on close
 			if (dialogButton.getText().equalsIgnoreCase("cancel")) return null;
 			MilkList specificMilkList = null;
 			
@@ -82,7 +90,7 @@ public class GetMilkDialog extends Dialog<MilkList>{
 			int startingYear;
 			int endingYear;
 			String farmName;
-			
+			// determine month, year, and farm name parameters
 			if(startMonth.getValue() == null) {
 				startingMonth = 0;
 			}else {
@@ -152,10 +160,10 @@ public class GetMilkDialog extends Dialog<MilkList>{
 
 	/**
 	 * 
-	 * @param startMonth
-	 * @param endMonth
-	 * @param startYear
-	 * @param endYear
+	 * @param startMonth the start month
+	 * @param endMonth the end month
+	 * @param startYear the start year
+	 * @param endYear the end year
 	 * @return true if the parameters allow for a legal retrieval of MilkData
 	 */
 	private boolean legalRange(int startMonth, int endMonth, int startYear, int endYear) {

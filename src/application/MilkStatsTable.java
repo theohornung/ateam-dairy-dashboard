@@ -1,16 +1,25 @@
 package application;
 
-
 import application.interfaces.IMilkList;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+
+/**
+ * Custom UI element to display milk data in a table and statistics about
+ * the milk data.
+ */
 public class MilkStatsTable extends HBox{
 
-	private MilkTable table;
+	private MilkTable table; // table display for data
 	VBox vbox;
+	
+	/**
+	 * Constructor to create new MilkStatsTable instance
+	 * @param milkList the list of milk data to display
+	 */
 	public MilkStatsTable(IMilkList milkList) {
 
 		super(10);
@@ -22,6 +31,10 @@ public class MilkStatsTable extends HBox{
 	}
 	
 	
+	/**
+	 * Updates the statistics displayed
+	 * @param milkList the list of data to calculate statistics from
+	 */
 	public void updateStatistics(IMilkList milkList) {
 		final ObservableList<MilkData> data = FXCollections.observableArrayList(milkList);
 		table.reset();
@@ -38,6 +51,10 @@ public class MilkStatsTable extends HBox{
 		this.getChildren().addAll(table, vbox);
 	}
 	
+	/**
+	 * Calculates and displays statistics about milk data by month for a single farm
+	 * @param milkList the list of data to calculate statistics from
+	 */
 	public void monthStatistics(IMilkList milkList) {
 		final ObservableList<MilkData> data = FXCollections.observableArrayList(milkList);
 		table.reset();
@@ -55,6 +72,10 @@ public class MilkStatsTable extends HBox{
 		this.getChildren().addAll(table, vbox);
 	}
 	
+	/**
+	 * Calculates and displays statistics about milk data by year
+	 * @param milkList the list of data to calculate statistics from
+	 */
 	public void yearStatistics(IMilkList milkList) {
 		final ObservableList<MilkData> data = FXCollections.observableArrayList(milkList);
 		table.reset();
@@ -72,6 +93,10 @@ public class MilkStatsTable extends HBox{
 		this.getChildren().addAll(table, vbox);
 	}
 	
+	/**
+	 * Calculates and displays statistics about milk produced by a single farm for a month report
+	 * @param milkList
+	 */
 	public void monthreStatistics(IMilkList milkList) {
 		final ObservableList<MilkData> data = FXCollections.observableArrayList(milkList);
 		table.reset();
@@ -91,6 +116,10 @@ public class MilkStatsTable extends HBox{
 		this.getChildren().addAll(table, vbox);
 	}
 	
+	/**
+	 * Accessor method to get the MilkTable contained in this obj
+	 * @return the MilkTable instance contained by this obj
+	 */
 	public MilkTable getTable(){
 		return table;
 	}

@@ -18,14 +18,18 @@ import javafx.scene.control.Alert.AlertType;
 public class Dashboard extends BorderPane {
 
 	private IMilkList masterList; // the list of all currently loaded milk data
-	private IFileService fileService;
+	private IFileService fileService; // the file service for r/w operations
 
-	private Stage primaryStage;
-	private MilkStatsTable farmTable;
+	private Stage primaryStage; // the stage containing this Dashboard
+	private MilkStatsTable farmTable; // component to display data and stats about data
 
+	/**
+	 * Constructor to create a new Dashboard object
+	 * 
+	 * @param primaryStage the stage that the dashboard belongs to
+	 */
 	public Dashboard(Stage primaryStage) {
 		super();
-
 		masterList = new MilkList();
 		fileService = new FileService();
 		farmTable = new MilkStatsTable(masterList);
@@ -39,7 +43,6 @@ public class Dashboard extends BorderPane {
 	 * dashboard.
 	 */
 	private void init() {
-
 		initTop();
 		initCenter();
 	}
@@ -49,7 +52,8 @@ public class Dashboard extends BorderPane {
 	 */
 	private void initTop() {
 		HBox buttons = new HBox();
-		// Creation of dialog box
+		
+		// Creation of help dialog
 		Alert help = new Alert(AlertType.INFORMATION);
 		help.setTitle("Help / FAQs");
 		help.setHeaderText("Welcom to the dairy dashboard!");
@@ -63,11 +67,12 @@ public class Dashboard extends BorderPane {
 				+ "View milk production data based on farm and date input with the 'Milk By Range' button.\n\n";
 		help.setContentText(helpText);
 
-		// Creation of button
+		// create of help button
 		Button helpButton = new Button("Help");
 		// creation of functionality of help button
 		helpButton.setOnAction(e -> help.showAndWait());
 
+		// set up button to add milk data
 		Button addMilk = new Button("Add Milk");
 		AddMilkDialog milkTaker = new AddMilkDialog();
 		// set control to add milk data entered into the dialog
@@ -80,7 +85,7 @@ public class Dashboard extends BorderPane {
 			}
 		});
 
-		// Create remove button
+		// create remove button
 		Button removeMilk = new Button("Remove milk");
 		RemoveMilkDialog milkRemover = new RemoveMilkDialog();
 		// sets remove button operation
@@ -98,14 +103,17 @@ public class Dashboard extends BorderPane {
 		FarmRepDialog farmDia = new FarmRepDialog(masterList);
 		farmReport.setOnMouseClicked(e -> farmDia.showAndWait());
 
+		// button to display annual report table
 		Button annReport = new Button("Annual Report");
 		AnnualRepDialog annDia = new AnnualRepDialog(masterList);
 		annReport.setOnMouseClicked(e -> annDia.showAndWait());
 
+		// button to display monthly report table
 		Button monthReport = new Button("Month Report");
 		MonthRepDialog monDia = new MonthRepDialog(masterList);
 		monthReport.setOnMouseClicked(e -> monDia.showAndWait());
 
+		// button to get milk data given specified parameters
 		GetMilkDialog getMilk = new GetMilkDialog(masterList);
 		Button milkByRange = new Button("Milk By Range");
 		milkByRange.setOnMouseClicked(e -> getMilk.showAndWait());

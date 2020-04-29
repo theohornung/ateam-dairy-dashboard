@@ -23,7 +23,7 @@ public class FileService implements IFileService {
 	@Override
 	public List<MilkData> readCsv(String filePath) throws IOException {
 		return Files.lines(Paths.get(filePath))
-				.filter(line -> !line.equals("date,farm_id,weight"))
+				.filter(line -> !line.equals("date,farm_id,weight")) // ignore first line of files
 				.map(line -> parseMilkData(line))
 				.collect(Collectors.toList());
 	}

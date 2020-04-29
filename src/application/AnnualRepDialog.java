@@ -7,7 +7,6 @@ import java.util.Comparator;
 
 import application.interfaces.IMilkList;
 import javafx.geometry.Insets;
-import javafx.scene.Node;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
@@ -21,32 +20,39 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 
 /**
- * A dialog that takes in data to create new milk data
+ * Dialog component to display a milk production report for a year
  */
 public class AnnualRepDialog extends Dialog<MilkList> {
 
+	/**
+	 * Constructor to create a new AnnualRepDialog object
+	 * 
+	 * @param mainList the list of milk data produced in a year
+	 */
 	public AnnualRepDialog(IMilkList mainList) {
 		this.setTitle("Milk by Year");
 		this.setHeaderText("Please input a year for which to display milk totals");
 
+		// set up display button
 		ButtonType displayButtonType = new ButtonType("Display", ButtonData.OK_DONE);
 		this.getDialogPane().getButtonTypes().addAll(displayButtonType, ButtonType.CANCEL);
 
+		// set up grid pane to contain data fields
 		GridPane grid = new GridPane();
 		grid.setHgap(10);
 		grid.setVgap(10);
 		grid.setPadding(new Insets(20, 150, 10, 10));
 				
-		TextField year = new TextField();
+		TextField year = new TextField(); // year field input
 		year.setPromptText("Year");
 
-		grid.add(new Label("Year:"), 0, 0);
+		grid.add(new Label("Year:"), 0, 0); // add year field component to grid
 		grid.add(year, 1, 0);
 
-		Node dispButton = this.getDialogPane().lookupButton(displayButtonType);
-		// can change to true to add reqs to inserting
-		dispButton.setDisable(false);
+		// keep the display button enabled
+		this.getDialogPane().lookupButton(displayButtonType).setDisable(false);
 
+		// place the grid into the dialog
 		this.getDialogPane().setContent(grid);
 
 		// set the dialog to return year after submitting valid data
@@ -87,27 +93,32 @@ public class AnnualRepDialog extends Dialog<MilkList> {
 					pane.setCenter(newTable);
 					HBox buttonBox = new HBox();
 					
+					// set up button to sort by name
 					Button byFarm = new Button("Sort by Name");
 					byFarm.setOnMouseClicked(e -> {
 						Collections.sort(nameComp, new SortByName());
 						newTable.yearStatistics(nameComp);
 					});
 					
+					// set up button to sort by ascending qt of milk produced
 					Button ascend = new Button("Sort in Ascending Milk Order");
 					ascend.setOnMouseClicked(e -> {
 						Collections.sort(nameComp, new SortAscend());
 						newTable.yearStatistics(nameComp);
 					});
 					
+					// set up button to sort by descending qt of milk produced
 					Button descend = new Button("Sort in Descending Milk Order");
 					descend.setOnMouseClicked(e -> {
 						Collections.sort(nameComp, new SortDescend());
 						newTable.yearStatistics(nameComp);
 					});
 					
+					// add all buttons to pane
 					buttonBox.getChildren().addAll(byFarm, ascend, descend);
 					pane.setBottom(buttonBox);
 					
+					// add all components to dialog pane
 					dialog.getDialogPane().setContent(pane);
 					ButtonType okButtonType = new ButtonType("Ok", ButtonData.OK_DONE);
 					dialog.getDialogPane().getButtonTypes().addAll(okButtonType);
@@ -124,6 +135,15 @@ public class AnnualRepDialog extends Dialog<MilkList> {
 		});
 	}
 
+	/**
+	 * Creates a milk list such that there is one element for each farm, and 
+	 * each farm element contains its total milk produced
+	 * 
+	 * @param names the names of farms
+	 * @param mainList the list of milk data
+	 * @param year the year to get milk data from
+	 * @return
+	 */
 	private MilkList nameComposite(ArrayList<String> names, IMilkList mainList, int year) {
 		MilkList comp = new MilkList();
 		for (String name : names) {
@@ -139,20 +159,24 @@ public class AnnualRepDialog extends Dialog<MilkList> {
 		return comp;
 	}
 
+	/**
+	 * Comparator class to sort MilkData by farm name
+	 */
 	public class SortByName implements Comparator<MilkData> {
 
 		@Override
 		public int compare(MilkData o1, MilkData o2) {
-			// TODO Auto-generated method stub
 			return o1.getFarmName().compareTo(o2.getFarmName());
 		}
 	}
 	
+	/**
+	 * Comparator class to sort MilkData by ascending milk weight
+	 */
 	public class SortAscend implements Comparator<MilkData> {
 
 		@Override
 		public int compare(MilkData o1, MilkData o2) {
-			// TODO Auto-generated method stub
 			if (o1.getMilkWeight()<o2.getMilkWeight()) {
 				return -1;
 			}
@@ -160,11 +184,13 @@ public class AnnualRepDialog extends Dialog<MilkList> {
 		}
 	}
 	
+	/**
+	 * Comparator class to sort MilkData by descending milk weight
+	 */
 	public class SortDescend implements Comparator<MilkData> {
 
 		@Override
 		public int compare(MilkData o1, MilkData o2) {
-			// TODO Auto-generated method stub
 			if (o1.getMilkWeight()>o2.getMilkWeight()) {
 				return -1;
 			}
