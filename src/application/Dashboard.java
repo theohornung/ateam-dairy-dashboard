@@ -2,14 +2,12 @@ package application;
 
 import java.util.Optional;
 
+import application.interfaces.IFileService;
+import application.interfaces.IMilkList;
 import javafx.scene.control.Button;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 
@@ -19,110 +17,120 @@ import javafx.scene.control.Alert.AlertType;
  */
 public class Dashboard extends BorderPane {
 
-	private Stage primaryStage;
-	private ScrollPane sPane;
-	private MilkTable farmTable;
+	private IMilkList masterList; // the list of all currently loaded milk data
+	private IFileService fileService; // the file service for r/w operations
 
+	private Stage primaryStage; // the stage containing this Dashboard
+	private MilkStatsTable farmTable; // component to display data and stats about data
+
+	/**
+	 * Constructor to create a new Dashboard object
+	 * 
+	 * @param primaryStage the stage that the dashboard belongs to
+	 */
 	public Dashboard(Stage primaryStage) {
 		super();
-		
-		sPane = new ScrollPane();
-		farmTable = new MilkTable();
+		masterList = new MilkList();
+		fileService = new FileService();
+		farmTable = new MilkStatsTable(masterList);
 		this.primaryStage = primaryStage;
-
 		init();
 	}
 
 	/**
-	 * Helper method to organize the initialization of the dashboard.
-	 * This methods calls other helper methods that serve to initialize different
-	 * panels of the dashboard.
+	 * Helper method to organize the initialization of the dashboard. This methods
+	 * calls other helper methods that serve to initialize different panels of the
+	 * dashboard.
 	 */
 	private void init() {
-		
-		initRight();
 		initTop();
-		initBottom();
 		initCenter();
 	}
 
-
 	/*
-	 * Initialize the right panel.
-	 * This panel contains all data manip. controls.
+	 * Initialize the top panel. This panel contains user help controls.
 	 */
-	private void initRight() {
-		VBox buttons = new VBox();
+	private void initTop() {
+		HBox buttons = new HBox();
+		
+		// Creation of help dialog
+		Alert help = new Alert(AlertType.INFORMATION);
+		help.setTitle("Help / FAQs");
+		help.setHeaderText("Welcome to the dairy dashboard!");
+		help.getDialogPane().setMinWidth(600);
+		help.getDialogPane().setMinHeight(350);
+		String helpText = "This dashboard will help your with milk production analysis needs.\n\n"
+				+ "Use the 'Import' button to load your milk production data stored in a .csv file.\n\n"
+				+ "Use the 'Export' button to save the current data in the table to a .csv file.\n\n"
+				+ "Use the 'Add Milk' and 'Remove Milk' buttons to add/remove data to/from the table.\n\n"
+				+ "Generate milk production reports by farm, year, or month using the 'Farm Report', 'Annual Report', and 'Month Report' buttons.\n\n"
+				+ "View milk production data based on farm and date input with the 'Milk By Range' button.\n\n";
+		help.setContentText(helpText);
+
+		// create of help button
+		Button helpButton = new Button("Help");
+		// creation of functionality of help button
+		helpButton.setOnAction(e -> help.showAndWait());
+
+		// set up button to add milk data
 		Button addMilk = new Button("Add Milk");
-
 		AddMilkDialog milkTaker = new AddMilkDialog();
-
 		// set control to add milk data entered into the dialog
 		addMilk.setOnMouseClicked(e -> {
 			Optional<MilkData> data = milkTaker.showAndWait();
 			if (data.isPresent()) {
-				ObservableList<MilkData> tableData = farmTable.getItems();
 				MilkData milk = data.get();
-				tableData.add(milk);
-				farmTable.addMilkWeight(milk.getMilkWeight());
-				farmTable.setItems(tableData);
+				masterList.add(milk);
+				farmTable.updateStatistics(masterList);
 			}
 		});
-		
-		// TODO implement these buttons
+
+		// create remove button
 		Button removeMilk = new Button("Remove milk");
-		Button milkByYear = new Button("Milk by year");
-		Button milkByMonth = new Button("Milk by month");
-		Button milkByFarm = new Button("Milk by farm");
-		//
-		
-		buttons.getChildren().addAll(addMilk, removeMilk, milkByYear, milkByMonth, milkByFarm);
-		this.setRight(buttons);
-	}
+		RemoveMilkDialog milkRemover = new RemoveMilkDialog();
+		// sets remove button operation
+		removeMilk.setOnMouseClicked(e -> {
+			Optional<MilkData> data = milkRemover.showAndWait();
+			if (data.isPresent()) {
+				MilkData milk = data.get();
+				masterList.remove(milk.getFarmName(), milk.getDate());
+				farmTable.updateStatistics(masterList);
+			}
+		});
 
-	/*
-	 * Initialize the top panel.
-	 * This panel contains user help controls.
-	 */
-	private void initTop() {
+		// button to display farm report table
+		Button farmReport = new Button("Farm Report");
+		FarmRepDialog farmDia = new FarmRepDialog(masterList);
+		farmReport.setOnMouseClicked(e -> farmDia.showAndWait());
 
-		// Creation of dialog box
-		Alert help = new Alert(AlertType.INFORMATION);
-		help.setTitle("Help / FAQs");
-		help.setHeaderText(null);
-		help.setContentText("Welcome to the dairy dashboard!\nContent\n\nMore Content");
+		// button to display annual report table
+		Button annReport = new Button("Annual Report");
+		AnnualRepDialog annDia = new AnnualRepDialog(masterList);
+		annReport.setOnMouseClicked(e -> annDia.showAndWait());
 
-		// Creation of button
-		Button button = new Button("Help");
-		this.setTop(button);
+		// button to display monthly report table
+		Button monthReport = new Button("Month Report");
+		MonthRepDialog monDia = new MonthRepDialog(masterList);
+		monthReport.setOnMouseClicked(e -> monDia.showAndWait());
 
-		// creation of functionality of help button
-		button.setOnAction(e -> help.showAndWait());
-	}
-
-	/**
-	 * Initialize bottom panel.
-	 * This panel contains all controls related to file r/w ops.
-	 */
-	private void initBottom() {
+		// button to get milk data given specified parameters
+		GetMilkDialog getMilk = new GetMilkDialog(masterList);
+		Button milkByRange = new Button("Milk By Range");
+		milkByRange.setOnMouseClicked(e -> getMilk.showAndWait());
 
 		// Creation of import and export button
-		Button importButton = new ImportButton(primaryStage);
-		Button exportButton = new ExportButton(primaryStage);
+		Button importButton = new ImportButton(primaryStage, fileService, masterList, farmTable);
+		Button exportButton = new ExportButton(primaryStage, fileService, masterList);
 
-		// adding to dashboard
-		HBox importExport = new HBox(importButton, exportButton);
-		this.setBottom(importExport);
+		buttons.getChildren().addAll(importButton, exportButton, addMilk, removeMilk, farmReport, annReport,
+				monthReport, milkByRange, helpButton);
+		this.setTop(buttons);
 	}
 
 	/**
-	 * Initialize the center panel.
-	 * This panel displays the main milk data table.
+	 * Initialize the center panel. This panel displays the main milk data table.
 	 */
 	private void initCenter() {
-		sPane.setHbarPolicy(ScrollBarPolicy.AS_NEEDED);
-		sPane.setVbarPolicy(ScrollBarPolicy.AS_NEEDED);
-		sPane.setContent(farmTable);
-		this.setCenter(sPane);
+		this.setCenter(farmTable);
 	}
 }

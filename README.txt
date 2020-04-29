@@ -9,4 +9,30 @@ Team Members:
 
 No members were on the same xteam.
 
-Notes: (tbd)
+Notes:
+Bugs: There are no known existing bugs in the project.
+Future Work:
+* Implement edit button
+* Plot farm production data (weight vs time, weight vs farm, etc.) in farm/annual/monthly reports
+* Design custom .css
+
+
+ateam-dairy-dashboard
+A javafx GUI dashboard that displays and allows manipulation of csv data about milk production by local milk producers.
+
+Contributors:
+theohornung
+esimonen
+aderocherwisco
+
+Dev Setup:
+1. git clone this repo
+2. in eclipse, go to Run Configurations > VM args and add the following:
+
+*--module-path "path\to\javafxsdk\lib" --add-modules javafx.controls,javafx.fxml
+
+Jar file build/execute instructions:
+Build:
+`jar cmf manifest.txt executable.jar -C ./bin .`
+Execute:
+`java --module-path "path/to/javafx/sdk" --add-modules javafx.controls,javafx.fxml -jar executable.jar`
