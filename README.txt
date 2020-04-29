@@ -30,3 +30,9 @@ Dev Setup:
 2. in eclipse, go to Run Configurations > VM args and add the following:
 
 *--module-path "path\to\javafxsdk\lib" --add-modules javafx.controls,javafx.fxml
+
+Jar file build/execute instructions:
+Build:
+`jar cmf manifest.txt executable.jar -C ./bin .`
+Execute:
+`java --module-path "path/to/javafx/sdk" --add-modules javafx.controls,javafx.fxml -jar executable.jar`
