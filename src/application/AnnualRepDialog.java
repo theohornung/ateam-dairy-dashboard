@@ -143,7 +143,6 @@ public class AnnualRepDialog extends Dialog<MilkList> {
 
 		@Override
 		public int compare(MilkData o1, MilkData o2) {
-			// TODO Auto-generated method stub
 			return o1.getFarmName().compareTo(o2.getFarmName());
 		}
 	}
@@ -152,7 +151,6 @@ public class AnnualRepDialog extends Dialog<MilkList> {
 
 		@Override
 		public int compare(MilkData o1, MilkData o2) {
-			// TODO Auto-generated method stub
 			if (o1.getMilkWeight()<o2.getMilkWeight()) {
 				return -1;
 			}
@@ -164,7 +162,6 @@ public class AnnualRepDialog extends Dialog<MilkList> {
 
 		@Override
 		public int compare(MilkData o1, MilkData o2) {
-			// TODO Auto-generated method stub
 			if (o1.getMilkWeight()>o2.getMilkWeight()) {
 				return -1;
 			}
