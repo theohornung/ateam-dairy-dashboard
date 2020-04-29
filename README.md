@@ -9,7 +9,13 @@
 
 No members were on the same xteam.
 
-Notes: (tbd)
+## Notes:
+### Bugs: There are no known existing bugs in the project.
+### Future Work:
+* Implement edit button
+* Plot farm production data (weight vs time, weight vs farm, etc.) in farm/annual/monthly reports
+* Design custom .css
+
 
 # ateam-dairy-dashboard
 A javafx GUI dashboard that displays and allows manipulation of csv data about milk production by local milk producers.
