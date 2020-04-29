@@ -6,6 +6,10 @@ import java.util.ArrayList;
 
 import application.interfaces.IMilkList;
 
+/**
+ * Implementation of IMilkList that defines functionality to store, manipulate, and filter
+ * a collection of MilkData
+ */
 public class MilkList extends ArrayList<MilkData> implements IMilkList {
 
 	/**

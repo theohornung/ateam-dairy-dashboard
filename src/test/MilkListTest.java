@@ -10,10 +10,15 @@ import org.junit.jupiter.api.Test;
 
 import application.MilkData;
 import application.MilkList;
+import application.interfaces.IMilkList;
 
+/**
+ * Test case for IMilkList.java
+ */
 class MilkListTest {
 
-	MilkList milkList;
+	IMilkList milkList;
+
 	@BeforeEach
 	void setUp() throws Exception {
 		milkList = new MilkList();
@@ -24,6 +29,10 @@ class MilkListTest {
 		milkList = null;
 	}
 
+	/**
+	 * Tests that the {@link IMilkList#getFromYears(int, int)} method behaves
+	 * correctly
+	 */
 	@Test
 	void test001_GetFromYears() {
 
@@ -36,7 +45,10 @@ class MilkListTest {
 		milkList.add(new MilkData("Farm 3", 999, 5, Month.MARCH, 9999));
 		assertEquals(milkList.getFromYears(2015, 2017).size(), 4);
 	}
-	
+
+	/**
+	 * Tests that the {@link IMilkList#getFromYear(int)}) method behaves correctly
+	 */
 	@Test
 	void test002_GetFromYear() {
 
@@ -49,7 +61,11 @@ class MilkListTest {
 		milkList.add(new MilkData("Farm 3", 999, 5, Month.MARCH, 9999));
 		assertEquals(milkList.getFromYear(2015).size(), 3);
 	}
-	
+
+	/**
+	 * Tests that the {@link IMilkList#getFromMonths(int, int, int)} method behaves
+	 * correctly
+	 */
 	@Test
 	void test003_GetFromMonths() {
 
@@ -62,7 +78,11 @@ class MilkListTest {
 		milkList.add(new MilkData("Farm 3", 999, 5, Month.MARCH, 9999));
 		assertEquals(milkList.getFromMonths(2015, Month.MARCH.getValue(), Month.APRIL.getValue()).size(), 3);
 	}
-	
+
+	/**
+	 * Test that the {@link IMilkList#getFromMonth(int, int)} method behaves
+	 * correctly
+	 */
 	@Test
 	void test004_GetFromMonth() {
 
@@ -75,7 +95,10 @@ class MilkListTest {
 		milkList.add(new MilkData("Farm 3", 999, 5, Month.MARCH, 9999));
 		assertEquals(milkList.getFromMonth(2015, Month.MARCH.getValue()).size(), 1);
 	}
-	
+
+	/**
+	 * Tests that the {@link IMilkList#getFromFarm(String)} method behaves correctly
+	 */
 	@Test
 	void test005_GetFromFarm() {
 
@@ -88,7 +111,10 @@ class MilkListTest {
 		milkList.add(new MilkData("Farm 3", 999, 5, Month.MARCH, 9999));
 		assertEquals(milkList.getFromFarm("Farm 1").size(), 3);
 	}
-	
+
+	/**
+	 * Tests that the {@link IMilkList#getMin()} method behaves correctly
+	 */
 	@Test
 	void test006_GetMin() {
 
@@ -101,7 +127,10 @@ class MilkListTest {
 		milkList.add(new MilkData("Farm 3", 999, 5, Month.MARCH, 9999));
 		assertEquals(milkList.getMin().getFarmName(), "Min");
 	}
-	
+
+	/**
+	 * Tests that the {@link IMilkList#getMax()} method behaves correctly
+	 */
 	@Test
 	void test007_GetMax() {
 
@@ -114,6 +143,10 @@ class MilkListTest {
 		milkList.add(new MilkData("Farm 3", 999, 5, Month.MARCH, 9999));
 		assertEquals(milkList.getMax().getFarmName(), "Max");
 	}
+
+	/**
+	 * Tests that the {@link IMilkList#getMean()} method behaves correctly
+	 */
 	@Test
 	void test008_GetMean() {
 
@@ -125,7 +158,10 @@ class MilkListTest {
 		milkList.add(new MilkData("Farm 3", 0, 5, Month.MARCH, 9999));
 		assertEquals(milkList.getMean(), 500);
 	}
-	
+
+	/**
+	 * Tests that the {@link IMilkList#getSum()} method behaves correctly
+	 */
 	@Test
 	void test09_GetSum() {
 

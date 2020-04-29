@@ -15,6 +15,14 @@ import javafx.stage.Stage;
  */
 public class ImportButton extends Button {
 
+	/**
+	 * Constructor to create button to handle importing milk data
+	 * 
+	 * @param primaryStage the stage that the button belongs to
+	 * @param fileService a file service instance to perform file read operations
+	 * @param milkList the list of current milk data
+	 * @param statsTable a table to display milk data
+	 */
 	public ImportButton(Stage primaryStage, IFileService fileService, IMilkList milkList, MilkStatsTable statsTable) {
 		IMilkList backup = milkList;
 		this.setText("Import");

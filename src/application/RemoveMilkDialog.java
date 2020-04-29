@@ -83,7 +83,6 @@ public class RemoveMilkDialog extends Dialog<MilkData> {
 		this.getDialogPane().setContent(grid);
 
 		// set the dialog to return a MilkData obj after submitting valid data
-		//TODO make date optional
 		this.setResultConverter(dialogButton -> {
 			if (dialogButton == removeButtonType) {
 				try {

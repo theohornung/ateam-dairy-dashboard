@@ -9,7 +9,6 @@ import application.interfaces.IMilkList;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
-import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
@@ -24,23 +23,30 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 
 /**
- * A dialog that takes in data to create new milk data
+ * A custom dialog to generate a report about milk production 
+ * for a given month in a given year.
  */
 public class MonthRepDialog extends Dialog<MilkData> {
 
+	/**
+	 * Constructor to create a new dialog with a milk production report
+	 * @param mainList the list of data to filter and generate the report from
+	 */
 	public MonthRepDialog(IMilkList mainList) {
 		this.setTitle("Milk by Month");
 		this.setHeaderText("Please put in a month and year to get a report of");
 
+		// set up display button
 		ButtonType displayButtonType = new ButtonType("Display", ButtonData.OK_DONE);
 		this.getDialogPane().getButtonTypes().addAll(displayButtonType, ButtonType.CANCEL);
 
+		// set up grid pane to display components
 		GridPane grid = new GridPane();
 		grid.setHgap(10);
 		grid.setVgap(10);
 		grid.setPadding(new Insets(20, 150, 10, 10));
 
-		
+		// list of months to choose from
 		ObservableList<Month> months = FXCollections.observableArrayList(
 				Month.JANUARY,
 				Month.FEBRUARY,
@@ -54,19 +60,18 @@ public class MonthRepDialog extends Dialog<MilkData> {
 				Month.OCTOBER,
 				Month.NOVEMBER,
 				Month.DECEMBER);
-		ComboBox<Month> month = new ComboBox<>(months);
+		ComboBox<Month> month = new ComboBox<>(months); // month drop down field input
 				
-		TextField year = new TextField();
+		TextField year = new TextField(); // year field input
 		year.setPromptText("Year");
 
-		grid.add(new Label("Month:"), 0, 0);		
+		grid.add(new Label("Month:"), 0, 0); // organize grid pane
 		grid.add(month, 1, 0);
 		grid.add(new Label("Year:"), 0, 1);
 		grid.add(year, 1, 1);
 
-		Node dispButton = this.getDialogPane().lookupButton(displayButtonType);
-		// can change to true to add reqs to inserting
-		dispButton.setDisable(false);
+		// keep the display button from being disabled
+		this.getDialogPane().lookupButton(displayButtonType).setDisable(false);
 
 		this.getDialogPane().setContent(grid);
 
@@ -75,6 +80,7 @@ public class MonthRepDialog extends Dialog<MilkData> {
 			
 			if (dialogButton == displayButtonType) {
 				try {
+					// get data from input fields
 					int curYear = Integer.parseInt(year.getText());
 					Month curMonth = month.getValue();
 					MilkList monthMilk = new MilkList();
@@ -93,6 +99,7 @@ public class MonthRepDialog extends Dialog<MilkData> {
 						}
 					}
 					
+					// set up display table data and table
 					MilkList nameComp = nameComposite(names, mainList, curYear);
 					Collections.sort(nameComp, new SortByName());
 					
@@ -109,18 +116,21 @@ public class MonthRepDialog extends Dialog<MilkData> {
 					pane.setCenter(newTable);
 					HBox buttonBox = new HBox();
 					
+					// sort by farm name button
 					Button byFarm = new Button("Sort by Name");
 					byFarm.setOnMouseClicked(e -> {
 						Collections.sort(nameComp, new SortByName());
 						newTable.monthreStatistics(nameComp);
 					});
 					
+					// sort by ascending milk weight button
 					Button ascend = new Button("Sort in Ascending Milk Order");
 					ascend.setOnMouseClicked(e -> {
 						Collections.sort(nameComp, new SortAscend());
 						newTable.monthreStatistics(nameComp);
 					});
 					
+					// sort by descending milk weight button
 					Button descend = new Button("Sort in Descending Milk Order");
 					descend.setOnMouseClicked(e -> {
 						Collections.sort(nameComp, new SortDescend());
@@ -146,7 +156,15 @@ public class MonthRepDialog extends Dialog<MilkData> {
 		});
 	}
 
-	
+	/**
+	 * Creates a milk list such that there is one element for each farm, and 
+	 * each farm element contains its total milk produced
+	 * 
+	 * @param names the names of farms
+	 * @param mainList the list of milk data
+	 * @param year the year to get milk data from
+	 * @return
+	 */
 	private MilkList nameComposite(ArrayList<String> names, IMilkList mainList, int year) {
 		MilkList comp = new MilkList();
 		for (String name : names) {
@@ -162,20 +180,24 @@ public class MonthRepDialog extends Dialog<MilkData> {
 		return comp;
 	}
 
+	/**
+	 * Comparator class to sort MilkData by farm name
+	 */
 	public class SortByName implements Comparator<MilkData> {
 
 		@Override
 		public int compare(MilkData o1, MilkData o2) {
-			// TODO Auto-generated method stub
 			return o1.getFarmName().compareTo(o2.getFarmName());
 		}
 	}
 	
+	/**
+	 * Comparator class to sort MilkData by ascending milk weight
+	 */
 	public class SortAscend implements Comparator<MilkData> {
 
 		@Override
 		public int compare(MilkData o1, MilkData o2) {
-			// TODO Auto-generated method stub
 			if (o1.getMilkWeight()<o2.getMilkWeight()) {
 				return -1;
 			}
@@ -183,11 +205,13 @@ public class MonthRepDialog extends Dialog<MilkData> {
 		}
 	}
 	
+	/**
+	 * Comparator class to sort MilkData by descending milk weight
+	 */
 	public class SortDescend implements Comparator<MilkData> {
 
 		@Override
 		public int compare(MilkData o1, MilkData o2) {
-			// TODO Auto-generated method stub
 			if (o1.getMilkWeight()>o2.getMilkWeight()) {
 				return -1;
 			}
