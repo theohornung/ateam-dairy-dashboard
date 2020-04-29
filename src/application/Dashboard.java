@@ -56,7 +56,7 @@ public class Dashboard extends BorderPane {
 		// Creation of help dialog
 		Alert help = new Alert(AlertType.INFORMATION);
 		help.setTitle("Help / FAQs");
-		help.setHeaderText("Welcom to the dairy dashboard!");
+		help.setHeaderText("Welcome to the dairy dashboard!");
 		help.getDialogPane().setMinWidth(600);
 		help.getDialogPane().setMinHeight(350);
 		String helpText = "This dashboard will help your with milk production analysis needs.\n\n"
