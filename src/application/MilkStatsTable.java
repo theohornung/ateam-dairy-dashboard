@@ -1,5 +1,7 @@
 package application;
 
+import java.time.Month;
+
 import application.interfaces.IMilkList;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -40,9 +42,16 @@ public class MilkStatsTable extends HBox{
 		table.reset();
 		table.setItems(data);
 		//creating data analysis
+		String mean = null;
+		if (Double.isNaN(milkList.getMean())) {
+			mean = "0";
+		}
+		else {
+			mean = String.format("%.1f", milkList.getMean());
+		}
 		Label max = new Label("Most Milk:\n" + milkList.getMax().getFarmName() + " on " + milkList.getMax().getFormattedDate() + " with " + (int) milkList.getMax().getMilkWeight() + " pounds.");
 		Label min = new Label("Least Milk:\n" + milkList.getMin().getFarmName() + " on " + milkList.getMin().getFormattedDate() + " with " + (int) milkList.getMin().getMilkWeight() + " pounds.");
-		Label average = new Label("Average milk on entry is " + String.format("%.1f", milkList.getMean()) + " pounds.");
+		Label average = new Label("Average milk on entry is " + mean + " pounds.");
 		Label total = new Label("Total milk produced is " + String.format("%.1f", milkList.getSum())  + " pounds.");
 		vbox = new VBox(10);
 		vbox.setPrefWidth(400);
@@ -61,9 +70,16 @@ public class MilkStatsTable extends HBox{
 		table.setItems(data);
 		//creating data analysis
 		String farmName = milkList.getMax().getFarmName();
+		String mean = null;
+		if (Double.isNaN(milkList.getMean())) {
+			mean = "0";
+		}
+		else {
+			mean = String.format("%.1f", milkList.getMean());
+		}
 		Label max = new Label("Most Milk:\n" + farmName + " in " + milkList.getMax().getDate().getMonth().toString() + " with " + (int) milkList.getMax().getMilkWeight() + " pounds.");
 		Label min = new Label("Least Milk:\n" + farmName + " in " + milkList.getMin().getDate().getMonth().toString() + " with " + (int) milkList.getMin().getMilkWeight() + " pounds.");
-		Label average = new Label("Average milk produced by " + farmName + " in each month is "+ String.format("%.1f", milkList.getMean()) + " pounds.");
+		Label average = new Label("Average milk produced by " + farmName + " in each month is "+ mean + " pounds.");
 		Label total = new Label("Total milk produced in " + milkList.getMax().getDate().getYear() + " by " + farmName + " is " + String.format("%.1f", milkList.getSum()) + " pounds.");
 		vbox = new VBox(10);
 		vbox.setPrefWidth(400);
@@ -76,15 +92,22 @@ public class MilkStatsTable extends HBox{
 	 * Calculates and displays statistics about milk data by year
 	 * @param milkList the list of data to calculate statistics from
 	 */
-	public void yearStatistics(IMilkList milkList) {
+	public void yearStatistics(IMilkList milkList, int curYear) {
 		final ObservableList<MilkData> data = FXCollections.observableArrayList(milkList);
 		table.reset();
 		table.setItems(data);
 		//creating data analysis
-		String year = Integer.toString(milkList.getMax().getDate().getYear());
+		String year = Integer.toString(curYear);
+		String mean = null;
+		if (Double.isNaN(milkList.getMean())) {
+			mean = "0";
+		}
+		else {
+			mean = String.format("%.1f", milkList.getMean());
+		}
 		Label max = new Label("Most Milk in " + year + ":\n" + milkList.getMax().getFarmName() + " with " + (int) milkList.getMax().getMilkWeight() + " pounds.");
 		Label min = new Label("Least Milk in " + year + ":\n" + milkList.getMin().getFarmName()  + " with " + (int) milkList.getMin().getMilkWeight() + " pounds.");
-		Label average = new Label("Average milk produced by farms in " + year + " is "+ String.format("%.1f", milkList.getMean()) + " pounds.");
+		Label average = new Label("Average milk produced by farms in " + year + " is "+ mean + " pounds.");
 		Label total = new Label("Total milk produced in " + year + " is " + String.format("%.1f", milkList.getSum()) + " pounds.");
 		vbox = new VBox(10);
 		vbox.setPrefWidth(400);
@@ -97,17 +120,24 @@ public class MilkStatsTable extends HBox{
 	 * Calculates and displays statistics about milk produced by a single farm for a month report
 	 * @param milkList
 	 */
-	public void monthreStatistics(IMilkList milkList) {
+	public void monthreStatistics(IMilkList milkList, Month curMonth, int curYear) {
 		final ObservableList<MilkData> data = FXCollections.observableArrayList(milkList);
 		table.reset();
 		table.setItems(data);
 		//creating data analysis
-		String month = milkList.getMax().getDate().getMonth().toString() ;
-		int year = milkList.getMax().getDate().getYear();
+		String month = curMonth.toString();
+		String year = Integer.toString(curYear);
+		String mean = null;
+		if (Double.isNaN(milkList.getMean())) {
+			mean = "0";
+		}
+		else {
+			mean = String.format("%.1f", milkList.getMean());
+		}
 		Label years = new Label("Stats for year " + year + " in month " + month);
 		Label max = new Label("Most Milk:\n" + milkList.getMax().getFarmName() + " in " + month + " with " + (int) milkList.getMax().getMilkWeight() + " pounds.");
 		Label min = new Label("Least Milk:\n" + milkList.getMin().getFarmName() + " in " + month + " with " + (int) milkList.getMin().getMilkWeight() + " pounds.");
-		Label average = new Label("Average milk produced in " + month + " is " + String.format("%.1f", milkList.getMean()) + " pounds.");
+		Label average = new Label("Average milk produced in " + month + " is " + mean + " pounds.");
 		Label total = new Label("Total milk produced in " + month + " is " + String.format("%.1f", milkList.getSum()) + " pounds.");
 		vbox = new VBox(10);
 		vbox.setPrefWidth(400);

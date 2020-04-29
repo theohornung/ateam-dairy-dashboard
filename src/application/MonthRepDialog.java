@@ -100,14 +100,14 @@ public class MonthRepDialog extends Dialog<MilkData> {
 					}
 					
 					// set up display table data and table
-					MilkList nameComp = nameComposite(names, mainList, curYear);
+					MilkList nameComp = nameComposite(names, mainList, curYear, curMonth);
 					Collections.sort(nameComp, new SortByName());
 					
 					MilkStatsTable newTable = new MilkStatsTable(nameComp);
 					MilkTable opTable = newTable.getTable();
 					opTable.getColumns().remove(3); //removes date since day is irrelevant
 					
-					newTable.monthreStatistics(nameComp);
+					newTable.monthreStatistics(nameComp, curMonth, curYear);
 					opTable.setPrefWidth(280);
 					
 					Dialog<MilkList> dialog = new Dialog<>();
@@ -120,21 +120,21 @@ public class MonthRepDialog extends Dialog<MilkData> {
 					Button byFarm = new Button("Sort by Name");
 					byFarm.setOnMouseClicked(e -> {
 						Collections.sort(nameComp, new SortByName());
-						newTable.monthreStatistics(nameComp);
+						newTable.monthreStatistics(nameComp, curMonth, curYear);
 					});
 					
 					// sort by ascending milk weight button
 					Button ascend = new Button("Sort in Ascending Milk Order");
 					ascend.setOnMouseClicked(e -> {
 						Collections.sort(nameComp, new SortAscend());
-						newTable.monthreStatistics(nameComp);
+						newTable.monthreStatistics(nameComp, curMonth, curYear);
 					});
 					
 					// sort by descending milk weight button
 					Button descend = new Button("Sort in Descending Milk Order");
 					descend.setOnMouseClicked(e -> {
 						Collections.sort(nameComp, new SortDescend());
-						newTable.monthreStatistics(nameComp);
+						newTable.monthreStatistics(nameComp, curMonth, curYear);
 					});
 					
 					buttonBox.getChildren().addAll(byFarm, ascend, descend);
@@ -165,7 +165,7 @@ public class MonthRepDialog extends Dialog<MilkData> {
 	 * @param year the year to get milk data from
 	 * @return
 	 */
-	private MilkList nameComposite(ArrayList<String> names, IMilkList mainList, int year) {
+	private MilkList nameComposite(ArrayList<String> names, IMilkList mainList, int year, Month curMonth) {
 		MilkList comp = new MilkList();
 		for (String name : names) {
 			int milkWeight = 0;
@@ -174,7 +174,7 @@ public class MonthRepDialog extends Dialog<MilkData> {
 					milkWeight += data.getMilkWeight();
 				}
 			}
-			MilkData newData = new MilkData(name, milkWeight, 1, Month.JANUARY, year);
+			MilkData newData = new MilkData(name, milkWeight, 1, curMonth, year);
 			comp.add(newData);
 		}
 		return comp;
