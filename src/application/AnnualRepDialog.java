@@ -12,6 +12,8 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.layout.BorderPane;
@@ -50,65 +52,73 @@ public class AnnualRepDialog extends Dialog<MilkList> {
 		// set the dialog to return year after submitting valid data
 		this.setResultConverter(dialogButton -> {
 			if (dialogButton == displayButtonType) {
-				int curYear = Integer.parseInt(year.getText());
-				
-				MilkList yearMilk = new MilkList();
-				//gather all milk data for year into list
-				for (MilkData data : mainList) {
-					if (data.getDate().getYear() == curYear) {
-						yearMilk.add(data);
+				try {
+					int curYear = Integer.parseInt(year.getText());
+					
+					MilkList yearMilk = new MilkList();
+					//gather all milk data for year into list
+					for (MilkData data : mainList) {
+						if (data.getDate().getYear() == curYear) {
+							yearMilk.add(data);
+						}
 					}
-				}
-				
-				//collect all unique farm names into list
-				ArrayList<String> names = new ArrayList<String>();
-				for (MilkData data : yearMilk) {
-					if(!names.contains(data.getFarmName())) {
-						names.add(data.getFarmName());
+					
+					//collect all unique farm names into list
+					ArrayList<String> names = new ArrayList<String>();
+					for (MilkData data : yearMilk) {
+						if(!names.contains(data.getFarmName())) {
+							names.add(data.getFarmName());
+						}
 					}
-				}
-				
-				MilkList nameComp = nameComposite(names, mainList, curYear);
-				Collections.sort(nameComp, new SortByName());
-				
-				MilkStatsTable newTable = new MilkStatsTable(nameComp);
-				MilkTable opTable = newTable.getTable();
-				opTable.getColumns().remove(3); //removes date since year is only thing needed
-				
-				newTable.yearStatistics(nameComp, curYear);
-				opTable.setPrefWidth(260);
-				
-				Dialog<MilkList> dialog = new Dialog<>();
-				BorderPane pane = new BorderPane();
-				newTable.autosize();
-				pane.setCenter(newTable);
-				HBox buttonBox = new HBox();
-				
-				Button byFarm = new Button("Sort by Name");
-				byFarm.setOnMouseClicked(e -> {
+					
+					MilkList nameComp = nameComposite(names, mainList, curYear);
 					Collections.sort(nameComp, new SortByName());
+					
+					MilkStatsTable newTable = new MilkStatsTable(nameComp);
+					MilkTable opTable = newTable.getTable();
+					opTable.getColumns().remove(3); //removes date since year is only thing needed
+					
 					newTable.yearStatistics(nameComp, curYear);
-				});
-				
-				Button ascend = new Button("Sort in Ascending Milk Order");
-				ascend.setOnMouseClicked(e -> {
-					Collections.sort(nameComp, new SortAscend());
-					newTable.yearStatistics(nameComp, curYear);
-				});
-				
-				Button descend = new Button("Sort in Descending Milk Order");
-				descend.setOnMouseClicked(e -> {
-					Collections.sort(nameComp, new SortDescend());
-					newTable.yearStatistics(nameComp, curYear);
-				});
-				
-				buttonBox.getChildren().addAll(byFarm, ascend, descend);
-				pane.setBottom(buttonBox);
-				
-				dialog.getDialogPane().setContent(pane);
-				ButtonType okButtonType = new ButtonType("Ok", ButtonData.OK_DONE);
-				dialog.getDialogPane().getButtonTypes().addAll(okButtonType);
-				dialog.show();
+					opTable.setPrefWidth(260);
+					
+					Dialog<MilkList> dialog = new Dialog<>();
+					BorderPane pane = new BorderPane();
+					newTable.autosize();
+					pane.setCenter(newTable);
+					HBox buttonBox = new HBox();
+					
+					Button byFarm = new Button("Sort by Name");
+					byFarm.setOnMouseClicked(e -> {
+						Collections.sort(nameComp, new SortByName());
+						newTable.yearStatistics(nameComp, curYear);
+					});
+					
+					Button ascend = new Button("Sort in Ascending Milk Order");
+					ascend.setOnMouseClicked(e -> {
+						Collections.sort(nameComp, new SortAscend());
+						newTable.yearStatistics(nameComp, curYear);
+					});
+					
+					Button descend = new Button("Sort in Descending Milk Order");
+					descend.setOnMouseClicked(e -> {
+						Collections.sort(nameComp, new SortDescend());
+						newTable.yearStatistics(nameComp, curYear);
+					});
+					
+					buttonBox.getChildren().addAll(byFarm, ascend, descend);
+					pane.setBottom(buttonBox);
+					
+					dialog.getDialogPane().setContent(pane);
+					ButtonType okButtonType = new ButtonType("Ok", ButtonData.OK_DONE);
+					dialog.getDialogPane().getButtonTypes().addAll(okButtonType);
+					dialog.show();
+				}
+				catch (Exception e) {
+					// alert to invalid input
+					Alert alert = new Alert(AlertType.ERROR);
+					alert.setContentText("Invalid field(s) provided!");
+					alert.showAndWait();
+				}
 			}
 			return null;
 		});
